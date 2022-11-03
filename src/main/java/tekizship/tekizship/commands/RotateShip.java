@@ -176,23 +176,31 @@ public class RotateShip implements CommandExecutor {
         //https://www.spigotmc.org/threads/how-do-i-get-the-direction-the-player-is-facing.433419/
 
         for (Player player : playersOnShip){
-            Location teleportLocation = player.getLocation();
-            float differenceZ = centerBlock.getBlock().getZ() - teleportLocation.getBlock().getZ();
-            float differenceX = centerBlock.getBlock().getX() - teleportLocation.getBlock().getX();
+            Location location = player.getLocation();
+            float differenceZ = centerBlock.getBlock().getZ() - location.getBlock().getZ();
+            float differenceX = centerBlock.getBlock().getX() - location.getBlock().getX();
             float rotation = 0;
             if (directionRotate.equalsIgnoreCase("left")){
-                teleportLocation.setX(centerBlock.getBlock().getX() - differenceZ);
-                teleportLocation.setZ(centerBlock.getBlock().getZ() + differenceX);
-                rotation = (player.getLocation().getYaw() - 90 + 180) % 180;
+                location.setX(centerBlock.getBlock().getX() - differenceZ);
+                location.setZ(centerBlock.getBlock().getZ() + differenceX);
+                rotation = player.getLocation().getYaw() - 90;
             } else if (directionRotate.equalsIgnoreCase("right")){
-                teleportLocation.setX(centerBlock.getBlock().getX() + differenceZ);
-                teleportLocation.setZ(centerBlock.getBlock().getZ() - differenceX);
-                rotation = (player.getLocation().getYaw() + 90 + 180) % 180;
+                location.setX(centerBlock.getBlock().getX() + differenceZ);
+                location.setZ(centerBlock.getBlock().getZ() - differenceX);
+                rotation = player.getLocation().getYaw() + 90;
             }
-            if (rotation < 0) { rotation += 360.0;}
-            player.sendMessage(String.valueOf(rotation));
+            if (rotation > 180) {
+                float over = rotation - 180;
+                rotation = -180 + over;
+            }
+            else if (rotation < -180) {
+                float over = rotation + 180;
+                rotation = 180 - over;
+            }
+
+            Location teleportLocation = new Location(centerBlock.getWorld(), location.getBlockX(),
+                    location.getBlockY(), location.getBlockZ(), rotation, location.getPitch());
             player.teleport(teleportLocation);
-            player.getLocation().setYaw(rotation);
         }
     }
 }
