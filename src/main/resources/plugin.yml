@@ -1,0 +1,35 @@
+name: TekizShip
+version: '${project.version}'
+main: tekizship.tekizship.TekizShip
+api-version: 1.19
+commands:
+  moveship:
+    description: Moves the ship.
+    usage: /ship moveship name axis amount
+    aliases:
+    permission: moveship
+    permission-message: You do not have permission to spawn a ship.
+  createship:
+    description: Creates the ship.
+    usage: /createship x y z x y z name_of_ship
+    aliases:
+    permission: createship
+    permission-message: You do not have permission to spawn a ship.
+  rotateship:
+    description: Rotates the ship.
+    usage: /rotateship name_of_ship <left/right>
+    aliases:
+    permission: rotateship
+    permission-message: You do not have permission to spawn a ship.
+  setshipcontrols:
+    description: Sets the ship controls.
+    usage: /setshipcontrols name_of_ship axis
+    aliases:
+    permission: setshipcontrols
+    permission-message: You do not have permission to spawn a ship.
+  setshipforwarddirection:
+    description: Sets the ship controls.
+    usage: /setforwarddirection name_of_ship
+    aliases:
+    permission: setforwarddirection
+    permission-message: You do not have permission to spawn a ship.
