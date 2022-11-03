@@ -1,5 +1,6 @@
 package tekizship.tekizship.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -8,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tekizship.tekizship.ships.Ship;
 import tekizship.tekizship.ships.ShipAccess;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +51,7 @@ public class MoveShip implements CommandExecutor {
             player.sendMessage("Target location would place one or blocks inside another block.");
         } else {
             shipBlocksNew = new HashMap<>();
+            movePlayer(direction, directionAmount, getPlayersOnShip(ship));
 
             //sets the current blocks to air
             for (Map.Entry<Location, Material> pair : ship.getShipBlocks().entrySet()) {
@@ -118,5 +122,43 @@ public class MoveShip implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    //used to find all the players on the ship
+    public ArrayList<Player> getPlayersOnShip(Ship ship){
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()){
+            for (Location location : ship.getShipBlocks().keySet()){
+                    if (player.getLocation().getWorld().equals(location.getWorld())){
+                        int playerY = player.getLocation().getBlockY();
+                        int playerX = player.getLocation().getBlockX();
+                        int playerZ = player.getLocation().getBlockZ();
+
+                        int locationY = location.getBlockY();
+                        int locationX = location.getBlockX();
+                        int locationZ = location.getBlockZ();
+
+                        //first checks X and Z, then Y. Y accounts for either standing or jumping.
+                        if (Integer.compare(playerX, locationX) == 0  && Integer.compare(playerZ, locationZ) == 0){
+                            if (Integer.compare(playerY - 1, locationY) == 0 || Integer.compare(playerY - 2, locationY) == 0){
+                                if (!players.contains(player)){players.add(player);}
+                            }
+                        }
+                    }
+            }
+        }
+        return players;
+    }
+
+    public void movePlayer(String direction, int directionAmount, ArrayList<Player> playersOnShip){
+        for (Player player : playersOnShip){
+            Location teleportLocation = player.getLocation();
+            if (direction.equalsIgnoreCase("X")){
+                teleportLocation.setX(teleportLocation.getX() + directionAmount);
+            } else if (direction.equalsIgnoreCase("Z")){
+                teleportLocation.setZ(teleportLocation.getZ() + directionAmount);
+            }
+            player.teleport(teleportLocation);
+        }
     }
 }

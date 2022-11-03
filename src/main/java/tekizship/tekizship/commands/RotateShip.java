@@ -1,5 +1,6 @@
 package tekizship.tekizship.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import tekizship.tekizship.ships.Ship;
 import tekizship.tekizship.ships.ShipAccess;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,8 @@ public class RotateShip implements CommandExecutor {
             player.sendMessage("Target location would place one or blocks inside another block.");
             return;
         }
+
+        movePlayer(directionRotate, centerBlock, getPlayersOnShip(ship));
 
         for (Map.Entry<Location, Material> pair : ship.getShipBlocks().entrySet()) {
             shipBlocksNew.put(pair.getKey(), pair.getValue());
@@ -138,5 +142,57 @@ public class RotateShip implements CommandExecutor {
             else if (forwardDirection.equalsIgnoreCase("X+")) {return "Z+";}
         }
         return null;
+    }
+
+    public ArrayList<Player> getPlayersOnShip(Ship ship){
+        ArrayList<Player> players = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()){
+            for (Location location : ship.getShipBlocks().keySet()){
+                if (player.getLocation().getWorld().equals(location.getWorld())){
+                    int playerY = player.getLocation().getBlockY();
+                    int playerX = player.getLocation().getBlockX();
+                    int playerZ = player.getLocation().getBlockZ();
+
+                    int locationY = location.getBlockY();
+                    int locationX = location.getBlockX();
+                    int locationZ = location.getBlockZ();
+
+                    //first checks X and Z, then Y. Y accounts for either standing or jumping.
+                    if (Integer.compare(playerX, locationX) == 0  && Integer.compare(playerZ, locationZ) == 0){
+                        if (Integer.compare(playerY - 1, locationY) == 0 || Integer.compare(playerY - 2, locationY) == 0){
+                            if (!players.contains(player)){players.add(player);}
+                        }
+                    }
+                }
+            }
+        }
+        return players;
+    }
+
+    //todo - fix yaw
+    public void movePlayer(String directionRotate, Location centerBlock, ArrayList<Player> playersOnShip){
+
+        //rotation double based on code provided by worthless_hobo
+        //https://www.spigotmc.org/threads/how-do-i-get-the-direction-the-player-is-facing.433419/
+
+        for (Player player : playersOnShip){
+            Location teleportLocation = player.getLocation();
+            float differenceZ = centerBlock.getBlock().getZ() - teleportLocation.getBlock().getZ();
+            float differenceX = centerBlock.getBlock().getX() - teleportLocation.getBlock().getX();
+            float rotation = 0;
+            if (directionRotate.equalsIgnoreCase("left")){
+                teleportLocation.setX(centerBlock.getBlock().getX() - differenceZ);
+                teleportLocation.setZ(centerBlock.getBlock().getZ() + differenceX);
+                rotation = (player.getLocation().getYaw() - 90 + 180) % 180;
+            } else if (directionRotate.equalsIgnoreCase("right")){
+                teleportLocation.setX(centerBlock.getBlock().getX() + differenceZ);
+                teleportLocation.setZ(centerBlock.getBlock().getZ() - differenceX);
+                rotation = (player.getLocation().getYaw() + 90 + 180) % 180;
+            }
+            if (rotation < 0) { rotation += 360.0;}
+            player.sendMessage(String.valueOf(rotation));
+            player.teleport(teleportLocation);
+            player.getLocation().setYaw(rotation);
+        }
     }
 }
