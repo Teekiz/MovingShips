@@ -26,6 +26,7 @@ public final class TekizShip extends JavaPlugin {
         getCommand("setshipcontrols").setExecutor(new SetShipControls());
         getCommand("rotateship").setExecutor(new RotateShip());
         getCommand("setshipforwarddirection").setExecutor(new SetShipForwardDirection());
+        getCommand("setupShip").setExecutor(new SetupShip());
         getServer().getPluginManager().registerEvents(new CommandMovementListener(), this);
         ShipAccess access = ShipAccess.getInstance();
     }

@@ -53,6 +53,7 @@ public class MoveShip implements CommandExecutor {
             shipBlocksNew = new HashMap<>();
             movePlayer(direction, directionAmount, getPlayersOnShip(ship));
 
+            //todo set if at a certain level to water
             //sets the current blocks to air
             for (Map.Entry<Location, Material> pair : ship.getShipBlocks().entrySet()) {
                 shipBlocksNew.put(pair.getKey(), pair.getValue());

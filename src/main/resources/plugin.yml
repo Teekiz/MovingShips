@@ -33,3 +33,9 @@ commands:
     aliases:
     permission: setforwarddirection
     permission-message: You do not have permission to spawn a ship.
+  setupship:
+    description: Sets the ship controls.
+    usage: /setupship
+    aliases:
+    permission: setupship
+    permission-message: You do not have permission to spawn a ship.

@@ -29,12 +29,13 @@ public class SetShipForwardDirection implements CommandExecutor {
         } else {
             Ship ship = shipAccess.getShipByName(args[0]);
             Set<Material> set = null;
-            setShipDirection(ship, player);
+            String direction = getShipDirection(player);
+            setShipDirection(ship, player, direction);
         }
         return true;
     }
 
-    public void setShipDirection(Ship ship, Player player){
+    public String getShipDirection(Player player){
         String direction;
         //rotation double based on code provided by worthless_hobo
         //https://www.spigotmc.org/threads/how-do-i-get-the-direction-the-player-is-facing.433419/
@@ -47,6 +48,10 @@ public class SetShipForwardDirection implements CommandExecutor {
         else if (rotation >= 225 && rotation < 315) {direction = "X-";}
         else {direction = "Z-";}
 
+        return direction;
+    }
+
+    public void setShipDirection(Ship ship, Player player, String direction){
         ship.setFrontDirection(direction);
         player.sendMessage("Set ship forward direction to " + direction + ".");
     }

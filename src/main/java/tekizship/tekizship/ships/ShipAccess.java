@@ -13,7 +13,7 @@ public class ShipAccess {
 
     private static ShipAccess instance;
     private ShipAccess(){}
-    private static ArrayList<Ship> ships = new ArrayList<>();
+    private ArrayList<Ship> ships = new ArrayList<>();
     private Ship selectedShip;
 
 
