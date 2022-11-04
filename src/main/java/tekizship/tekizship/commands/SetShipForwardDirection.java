@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class SetShipForwardDirection implements CommandExecutor {
 
-    ShipAccess shipAccess;
+    ShipAccess shipAccess = ShipAccess.getInstance();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
@@ -21,7 +21,6 @@ public class SetShipForwardDirection implements CommandExecutor {
             commandSender.sendMessage("Only players can use this command.");
         }
 
-        shipAccess = ShipAccess.getInstance();
         Player player = (Player) commandSender;
 
         if (args.length == 0) {

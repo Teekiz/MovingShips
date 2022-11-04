@@ -15,13 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RotateShip implements CommandExecutor {
-    ShipAccess shipAccess;
+    ShipAccess shipAccess = ShipAccess.getInstance();
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("Only players can use this command.");
         }
-        shipAccess = ShipAccess.getInstance();
+
         Player player = (Player) commandSender;
 
         if (args.length == 0 || args.length < 2){
