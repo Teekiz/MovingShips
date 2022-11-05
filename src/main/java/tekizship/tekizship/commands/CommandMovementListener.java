@@ -70,16 +70,32 @@ public class CommandMovementListener implements Listener {
                 moveShip.moveShip(ship, direction, 1, player);
             }
         } else if (command.equalsIgnoreCase("right")) {
-            if (negativeOrPositive.equalsIgnoreCase("+")) {
-                moveShip.moveShip(ship, directionOpposite, -1, player);
+            if (direction.equalsIgnoreCase("X")){
+                if (negativeOrPositive.equalsIgnoreCase("+")) {
+                    moveShip.moveShip(ship, directionOpposite, 1, player);
+                } else {
+                    moveShip.moveShip(ship, directionOpposite, -1, player);
+                }
             } else {
-                moveShip.moveShip(ship, directionOpposite, 1, player);
+                if (negativeOrPositive.equalsIgnoreCase("+")) {
+                    moveShip.moveShip(ship, directionOpposite, -1, player);
+                } else {
+                    moveShip.moveShip(ship, directionOpposite, 1, player);
+                }
             }
         } else if (command.equalsIgnoreCase("left")) {
-            if (negativeOrPositive.equalsIgnoreCase("+")) {
-                moveShip.moveShip(ship, directionOpposite, 1, player);
+            if (direction.equalsIgnoreCase("X")){
+                if (negativeOrPositive.equalsIgnoreCase("+")) {
+                    moveShip.moveShip(ship, directionOpposite, -1, player);
+                } else {
+                    moveShip.moveShip(ship, directionOpposite, 1, player);
+                }
             } else {
-                moveShip.moveShip(ship, directionOpposite, -1, player);
+                if (negativeOrPositive.equalsIgnoreCase("+")) {
+                    moveShip.moveShip(ship, directionOpposite, 1, player);
+                } else {
+                    moveShip.moveShip(ship, directionOpposite, -1, player);
+                }
             }
         } else if (command.equalsIgnoreCase("rotateRight")){
             rotateShip.rotateShip(ship, "right", player);

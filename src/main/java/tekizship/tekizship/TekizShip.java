@@ -8,18 +8,23 @@ import tekizship.tekizship.ships.ShipAccess;
 
 public final class TekizShip extends JavaPlugin {
 
+    private static TekizShip plugin;
 
-    /*
-    *
-    *   Steps to use:
-    *   Step one - use /createship <x1> <y1> <z1> <x2> <y2> <z2> <name of ship>
-    *   Step two - set the controls by aiming at the related control and typing /setshipcontrols <name of ship> <control>
-    *   Step three - set the forward direction by using /setfowarddirection <name of ship>
-    * */
+    //todo create a save and load system
+    //todo create the tick system
+    //todo add command listeners
+    //todo add crew system
+    //todo add a system to prevent creating or destroying blocks on a ship
+    //todo move beds and chest contents each movement check
+    //todo neaten up the commands
+    //todo to check for special blocks (i.e. ladders) and set them correctly
+    //todo setup config file, to set max speed, max amount of ships
+    //todo create a delete command
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        plugin = this;
         Bukkit.getLogger().info("Ship Plugin Enable");
         getCommand("createship").setExecutor(new CreateShip());
         getCommand("moveship").setExecutor(new MoveShip());
@@ -29,10 +34,15 @@ public final class TekizShip extends JavaPlugin {
         getCommand("setupShip").setExecutor(new SetupShip());
         getServer().getPluginManager().registerEvents(new CommandMovementListener(), this);
         ShipAccess access = ShipAccess.getInstance();
+        access.loadShip();
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static TekizShip getPlugin(){
+        return plugin;
     }
 }

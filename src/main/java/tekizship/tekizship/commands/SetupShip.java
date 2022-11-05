@@ -119,6 +119,7 @@ public class SetupShip implements CommandExecutor {
                 player.sendMessage("§b§ <MovingShips> --- Ship Setup Complete --- <MovingShips>");
 
                 removeShipSetup(shipSetup);
+                shipAccess.saveShip();
             }
 
         /*

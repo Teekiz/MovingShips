@@ -53,5 +53,6 @@ public class SetShipForwardDirection implements CommandExecutor {
     public void setShipDirection(Ship ship, Player player, String direction){
         ship.setFrontDirection(direction);
         player.sendMessage("Set ship forward direction to " + direction + ".");
+        shipAccess.saveShip();
     }
 }

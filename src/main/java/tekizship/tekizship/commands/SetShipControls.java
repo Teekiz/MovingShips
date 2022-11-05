@@ -54,6 +54,7 @@ public class SetShipControls implements CommandExecutor {
         Ship ship = shipAccess.getShipByName(shipName);
         if (ship != null){
             ship.setShipControlLocation(control, controlLocation, player);
+            shipAccess.saveShip();
         } else {
             player.sendMessage("Ship cannot be found.");
         }

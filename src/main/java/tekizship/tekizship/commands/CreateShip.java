@@ -65,6 +65,7 @@ public class CreateShip implements CommandExecutor {
                 if (!doBlocksOverlap(shipBlocksCurrent)) {
                     shipAccess.createShip(shipName, player.getName(), shipBlocksCurrent);
                     player.sendMessage("Ship created: " + shipName + ".");
+                    shipAccess.saveShip();
                 } else {
                     player.sendMessage("Cannot create ship. Blocks overlap with another ship.");
                 }

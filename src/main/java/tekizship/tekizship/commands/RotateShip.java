@@ -85,6 +85,8 @@ public class RotateShip implements CommandExecutor {
         ship.setFrontDirection(updateDirection(ship, directionRotate));
         ship.setShipControlLocations(newShipControlLocation);
         ship.setShipBlocks(shipBlocksNew);
+
+        shipAccess.saveShip();
     }
 
     public boolean isClearToRotate(Ship ship, String directionRotate, Location centerBlock){

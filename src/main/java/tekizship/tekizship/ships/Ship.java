@@ -16,25 +16,27 @@ public class Ship {
     String shipName;
     String ownerName;
     HashMap<Location, Material> shipBlocks;
+    HashMap<String, Location> shipControls;
+    ArrayList<String> crewNames;
 
     //todo queue the commands
     List<String> queuedCommands;
     String frontDirection;
 
     //todo - record the current speed for forward
-    int speed;
-    HashMap<String, Location> shipControls;
+    int speed = 0;
+
 
     public Ship(String ShipName, String ownerName, HashMap<Location, Material> shipBlocks) {
         this.shipName = ShipName;
         this.ownerName = ownerName;
         this.shipBlocks = shipBlocks;
-        this.speed = 0;
         shipControls = new HashMap<>();
+        crewNames = new ArrayList<>();
     }
 
     public Ship() {
-        //used when loading to the external file.
+        //used when loading from the external file.
     }
 
     public String getShipName() {
@@ -45,6 +47,9 @@ public class Ship {
         return ownerName;
     }
 
+    public String getFrontDirection() {
+        return frontDirection;
+    }
     public HashMap<Location, Material> getShipBlocks() {
         return shipBlocks;
     }
@@ -52,9 +57,14 @@ public class Ship {
     public HashMap<String, Location> getShipControlLocations() {
         return shipControls;
     }
+    public ArrayList<String> getCrew() {return crewNames;}
 
-    public String getFrontDirection() {
-        return frontDirection;
+    public void setShipName(String shipName) {this.shipName = shipName;}
+
+    public void setOwnerName(String ownerName) {this.ownerName = ownerName;}
+
+    public void setFrontDirection(String direction) {
+        frontDirection = direction;
     }
 
     public void setShipBlocks(HashMap<Location, Material> newShipBlocks) {
@@ -92,7 +102,11 @@ public class Ship {
         player.sendMessage("Control " + controlName + " successfully set to ship: " + shipName + ".");
     }
 
-    public void setFrontDirection(String direction) {
-        frontDirection = direction;
+    public void setCrew(ArrayList <String> crewNames){
+        this.crewNames = crewNames;
     }
+
+    public void addCrew(String crewName){ crewNames.add(crewName);}
+
+    public void deleteCrew(String crewName){crewNames.remove(crewName);}
 }
