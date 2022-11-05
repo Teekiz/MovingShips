@@ -155,67 +155,79 @@ public class SetupShip implements CommandExecutor {
                 Location rotateLeftLocation = shipSetup.getRotateLeft();
                 Location rotateRightLocation = player.getTargetBlock(set, 5).getLocation();
 
-                player.sendMessage("Forward control location set at " + forwardLocation.getBlockX() + " (X), " +
-                        forwardLocation.getBlockY() + " (Y), " + backLocation.getBlockZ() + " (Z).");
-                player.sendMessage("Back control location set at " + backLocation.getBlockX() + " (X), " +
-                        forwardLocation.getBlockY() + " (Y), " + backLocation.getBlockZ() + " (Z).");
-                player.sendMessage("Left control location set at " + leftLocation.getBlockX() + " (X), " +
-                        leftLocation.getBlockY() + " (Y), " + leftLocation.getBlockZ() + " (Z).");
-                player.sendMessage("Right control location set at " + rightLocation.getBlockX() + " (X), " +
-                        rightLocation.getBlockY() + " (Y), " + rightLocation.getBlockZ() + " (Z).");
-                player.sendMessage("Rotate left control location set at " + rotateLeftLocation.getBlockX() + " (X), " +
-                        rotateLeftLocation.getBlockY() + " (Y), " + rotateLeftLocation.getBlockZ() + " (Z).");
-                player.sendMessage("Rotate right control location set at " + rotateRightLocation.getBlockX() + " (X), " +
-                        rotateRightLocation.getBlockY() + " (Y), " + rotateRightLocation.getBlockZ() + " (Z).");
+                if (isControlOnShip(rotateRightLocation, blocksSelected(shipSetup.getFirstLocation(), shipSetup.getSecondLocation(), player.getWorld()), player)) {
+                    player.sendMessage("Forward control location set at " + forwardLocation.getBlockX() + " (X), " +
+                            forwardLocation.getBlockY() + " (Y), " + backLocation.getBlockZ() + " (Z).");
+                    player.sendMessage("Back control location set at " + backLocation.getBlockX() + " (X), " +
+                            forwardLocation.getBlockY() + " (Y), " + backLocation.getBlockZ() + " (Z).");
+                    player.sendMessage("Left control location set at " + leftLocation.getBlockX() + " (X), " +
+                            leftLocation.getBlockY() + " (Y), " + leftLocation.getBlockZ() + " (Z).");
+                    player.sendMessage("Right control location set at " + rightLocation.getBlockX() + " (X), " +
+                            rightLocation.getBlockY() + " (Y), " + rightLocation.getBlockZ() + " (Z).");
+                    player.sendMessage("Rotate left control location set at " + rotateLeftLocation.getBlockX() + " (X), " +
+                            rotateLeftLocation.getBlockY() + " (Y), " + rotateLeftLocation.getBlockZ() + " (Z).");
+                    player.sendMessage("Rotate right control location set at " + rotateRightLocation.getBlockX() + " (X), " +
+                            rotateRightLocation.getBlockY() + " (Y), " + rotateRightLocation.getBlockZ() + " (Z).");
 
-                //todo check if they are on the ship
-                player.sendMessage("Please use '/ShipSetup confirm' to continue or '/ShipSetup cancel' to restart or '/ShipSetup undo' to set the controls again.");
-                shipSetup.setRotateRight(rotateRightLocation);
+                    //todo check if they are on the ship
+                    player.sendMessage("Please use '/ShipSetup confirm' to continue or '/ShipSetup cancel' to restart or '/ShipSetup undo' to set the controls again.");
+                    shipSetup.setRotateRight(rotateRightLocation);
+                }
             }
 
             if (shipSetup.isDirectionAndFirstAndSecondLocationSet() && shipSetup.getForward() != null && shipSetup.getBack() != null
                     && shipSetup.getLeft() != null && shipSetup.getRight() != null && shipSetup.getRotateLeft() == null && shipSetup.getRotateRight()
                     == null && isSet) {
                 Location rotateLeftLocation = player.getTargetBlock(set, 5).getLocation();
-                player.sendMessage("§b§ <MovingShips> --- Ship Setup (9/10) --- <MovingShips>");
-                player.sendMessage("Please look at the block used to rotate the ship right and use '/ShipSetup set'.");
-                shipSetup.setRotateLeft(rotateLeftLocation);
+                if (isControlOnShip(rotateLeftLocation, blocksSelected(shipSetup.getFirstLocation(), shipSetup.getSecondLocation(), player.getWorld()), player)){
+                    player.sendMessage("§b§ <MovingShips> --- Ship Setup (9/10) --- <MovingShips>");
+                    player.sendMessage("Please look at the block used to rotate the ship right and use '/ShipSetup set'.");
+                    shipSetup.setRotateLeft(rotateLeftLocation);
+                }
             }
 
             if (shipSetup.isDirectionAndFirstAndSecondLocationSet() && shipSetup.getForward() != null && shipSetup.getBack() != null
                     && shipSetup.getLeft() != null && shipSetup.getRight() == null && shipSetup.getRotateLeft() == null && shipSetup.getRotateRight()
                     == null && isSet) {
                 Location rightLocation = player.getTargetBlock(set, 5).getLocation();
-                player.sendMessage("§b§ <MovingShips> --- Ship Setup (8/10) --- <MovingShips>");
-                player.sendMessage("Please look at the block used to set the ship right and use '/ShipSetup set'.");
-                shipSetup.setRight(rightLocation);
+                if (isControlOnShip(rightLocation, blocksSelected(shipSetup.getFirstLocation(), shipSetup.getSecondLocation(), player.getWorld()), player)) {
+                    player.sendMessage("§b§ <MovingShips> --- Ship Setup (8/10) --- <MovingShips>");
+                    player.sendMessage("Please look at the block used to rotate the ship left and use '/ShipSetup set'.");
+                    shipSetup.setRight(rightLocation);
+                }
             }
 
             if (shipSetup.isDirectionAndFirstAndSecondLocationSet() && shipSetup.getForward() != null && shipSetup.getBack() != null
                     && shipSetup.getLeft() == null && shipSetup.getRight() == null && shipSetup.getRotateLeft() == null && shipSetup.getRotateRight()
                     == null && isSet) {
                 Location leftLocation = player.getTargetBlock(set, 5).getLocation();
-                player.sendMessage("§b§ <MovingShips> --- Ship Setup (7/10) --- <MovingShips>");
-                player.sendMessage("Please look at the block used to rotate the ship left and use '/ShipSetup set'.");
-                shipSetup.setLeft(leftLocation);
+                if (isControlOnShip(leftLocation, blocksSelected(shipSetup.getFirstLocation(), shipSetup.getSecondLocation(), player.getWorld()), player)) {
+                    player.sendMessage("§b§ <MovingShips> --- Ship Setup (7/10) --- <MovingShips>");
+                    player.sendMessage("Please look at the block used to set the ship right and use '/ShipSetup set'.");
+                    shipSetup.setLeft(leftLocation);
+                }
             }
 
             if (shipSetup.isDirectionAndFirstAndSecondLocationSet() && shipSetup.getForward() != null && shipSetup.getBack() == null
                     && shipSetup.getLeft() == null && shipSetup.getRight() == null && shipSetup.getRotateLeft() == null && shipSetup.getRotateRight()
                     == null && isSet) {
                 Location backLocation = player.getTargetBlock(set, 5).getLocation();
-                player.sendMessage("§b§ <MovingShips> --- Ship Setup (6/10) --- <MovingShips>");
-                player.sendMessage("Please look at the block used to set the ship left and use '/ShipSetup set'.");
-                shipSetup.setBack(backLocation);
+                if (isControlOnShip(backLocation, blocksSelected(shipSetup.getFirstLocation(), shipSetup.getSecondLocation(), player.getWorld()), player)) {
+                    player.sendMessage("§b§ <MovingShips> --- Ship Setup (6/10) --- <MovingShips>");
+                    player.sendMessage("Please look at the block used to set the ship left and use '/ShipSetup set'.");
+                    shipSetup.setBack(backLocation);
+                }
             }
 
             if (shipSetup.isDirectionAndFirstAndSecondLocationSet() && shipSetup.getForward() == null && shipSetup.getBack() == null
                     && shipSetup.getLeft() == null && shipSetup.getRight() == null && shipSetup.getRotateLeft() == null && shipSetup.getRotateRight()
                     == null && isSet) {
                 Location forwardLocation = player.getTargetBlock(set, 5).getLocation();
-                player.sendMessage("§b§ <MovingShips> --- Ship Setup (5/10) --- <MovingShips>");
-                player.sendMessage("Please look at the block used to set the ship backwards and use '/ShipSetup set'.");
-                shipSetup.setForward(forwardLocation);
+                if (isControlOnShip(forwardLocation, blocksSelected(shipSetup.getFirstLocation(), shipSetup.getSecondLocation(), player.getWorld()), player)) {
+                    player.sendMessage("§b§ <MovingShips> --- Ship Setup (5/10) --- <MovingShips>");
+                    player.sendMessage("Please look at the block used to set the ship backwards and use '/ShipSetup set'.");
+                    shipSetup.setForward(forwardLocation);
+                }
             }
 
             if (shipSetup.isDirectionAndFirstAndSecondLocationSet() && shipSetup.getForward() == null && shipSetup.getBack() == null
@@ -301,6 +313,14 @@ public class SetupShip implements CommandExecutor {
         return true;
     }
 
+    public boolean isControlOnShip(Location location, HashMap<Location, Material> blocks, Player player){
+        if (setShipControls.checkIsControlOnShip(location,blocks)){
+            return true;
+        } else {
+            player.sendMessage("This block is not within the ships area, please selected another block.");
+            return false;
+        }
+    }
 
     public ShipSetup getShipSetup(Player player) {
         for (ShipSetup shipSetup : storedShipSetup) {
@@ -344,6 +364,4 @@ public class SetupShip implements CommandExecutor {
         }
         return LocationsInArea;
     }
-
-
 }

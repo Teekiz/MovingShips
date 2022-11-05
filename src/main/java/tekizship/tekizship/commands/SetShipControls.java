@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tekizship.tekizship.ships.Ship;
 import tekizship.tekizship.ships.ShipAccess;
+
+import java.util.HashMap;
 import java.util.Set;
 
 public class SetShipControls implements CommandExecutor {
@@ -33,7 +35,13 @@ public class SetShipControls implements CommandExecutor {
                     || control.equalsIgnoreCase("rotateLeft") || control.equalsIgnoreCase("rotateRight")){
                 //Not 100% sure why I cannot set this directly, but it works
                 Set<Material> set = null;
-                setControl(shipName, control, player.getTargetBlock(set, 5).getLocation(), player);
+                Location targetLocation = player.getTargetBlock(set, 5).getLocation();
+                if (checkIsControlOnShip(targetLocation, shipAccess.getShipByName(shipName).getShipBlocks())){
+                    setControl(shipName, control, targetLocation, player);
+                } else {
+                    player.sendMessage("The location must be on the ship.");
+                }
+
             } else {
                 //todo - check to see if the ship is within the area of the ship (otherwise will be the controls)
                 player.sendMessage("Invalid control, must be either forward, back, right, left, rotateRight or rotateLeft");
@@ -49,6 +57,18 @@ public class SetShipControls implements CommandExecutor {
         } else {
             player.sendMessage("Ship cannot be found.");
         }
+    }
+
+    //this could use ship but its used in ship setup as well/
+    public Boolean checkIsControlOnShip(Location location, HashMap<Location, Material> LocationsInArea){
+        for (Location checkLocation : LocationsInArea.keySet()){
+            if (location.getBlock().equals(checkLocation.getBlock())){
+                if (checkLocation.getBlock().getType() != Material.AIR || checkLocation.getBlock().getType() != Material.WATER){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
