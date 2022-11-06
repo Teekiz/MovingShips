@@ -128,8 +128,6 @@ public class Ship {
     public void setSpeed(int speed){
         if (LocalDateTime.now().minusSeconds(1).isAfter(lastCommandInputted)){
             this.speed = speed;
-            Bukkit.getPlayer(getOwnerName()).sendMessage(String.valueOf(speed));
-            Bukkit.getPlayer(getOwnerName()).sendMessage(frontDirection);
             lastCommandInputted = LocalDateTime.now();
 
         }

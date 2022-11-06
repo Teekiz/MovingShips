@@ -31,34 +31,53 @@ public class MoveShip implements CommandExecutor {
             commandSender.sendMessage("Only players can use this command.");
         }
 
+        //todo handle exception for invalid args2
+
         Player player = (Player) commandSender;
-        shipName = args[0];
-        direction = args[1];
-        directionAmount = Integer.valueOf(args[2]);
-        selectedShip = shipAccess.getShipByName(shipName);
 
-        if (selectedShip == null) {
-            player.sendMessage("Cannot find ship.");
+        if (args.length == 3){
+            shipName = args[0];
+            direction = args[1];
+            directionAmount = Integer.parseInt(args[2]);
+            selectedShip = shipAccess.getShipByName(shipName);
+
+            if (selectedShip == null) {
+                player.sendMessage("Cannot find ship.");
+            } else {
+                if (!direction.equalsIgnoreCase("forward")  && !direction.equalsIgnoreCase("back") &&
+                        !direction.equalsIgnoreCase("left") && !direction.equalsIgnoreCase("right")){
+                    moveShip(selectedShip, direction, directionAmount, player);
+                } else {
+                    player.sendMessage("Invalid direction.");
+                }
+            }
+        } else {
+            player.sendMessage("Invalid use of command");
         }
-        moveShip(selectedShip, direction, directionAmount, player);
-
         return true;
 
     }
     //moves the ship in one direction by specified amount
     public void moveShip(Ship ship, String directionCommand, int directionAmount, Player player) {
 
-        //todo fix direction.
         direction = ship.getFrontDirection();
         directionValue = ship.getFrontDirectionValue();
 
+        //alters the direction of forward and back if necessary
+        if (directionCommand.equalsIgnoreCase("forward") && directionValue.equalsIgnoreCase("-")){
+                directionAmount = -directionAmount;
+        } else if (directionCommand.equalsIgnoreCase("back") && directionValue.equalsIgnoreCase("-")){
+            directionAmount = Math.abs(directionAmount);
+        }
+
+        //this method could be simplified - but i think its a bit easier to read atm
         if (directionCommand.equalsIgnoreCase("left")){
             if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("-")){
                 direction = "Z";
             } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("+")){
                 direction = "X";
             } else if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("+")){
-                direction = "X";
+                direction = "Z";
                 directionAmount = -directionAmount;
             } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("-")){
                 direction = "X";
@@ -71,7 +90,7 @@ public class MoveShip implements CommandExecutor {
             } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("-")){
                 direction = "X";
             } else if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("+")){
-                direction = "X";
+                direction = "Z";
             } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("+")){
                 direction = "X";
                 directionAmount = -directionAmount;
