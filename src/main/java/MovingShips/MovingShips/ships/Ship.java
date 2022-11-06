@@ -1,5 +1,7 @@
 package MovingShips.MovingShips.ships;
 
+import MovingShips.MovingShips.MovingShips;
+import MovingShips.MovingShips.utility.PlayersOnShip;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -128,7 +130,9 @@ public class Ship {
         if (LocalDateTime.now().minusSeconds(1).isAfter(lastCommandInputted)){
             this.speed = speed;
             lastCommandInputted = LocalDateTime.now();
-            Bukkit.getPlayer(getOwnerName()).sendMessage(getShipName() + " speed set to " + getSpeed() + ".");
+            for (Player player : PlayersOnShip.getPlayersOnShip(this)){
+                player.sendMessage("<MovingShips> "+ getShipName() + " speed set to " + getSpeed() + ".");
+            }
         }
     }
 
@@ -137,6 +141,9 @@ public class Ship {
     }
 
     public void setQueuedCommand(String queuedCommand) {
-        this.queuedCommand = queuedCommand;
+        if (LocalDateTime.now().minusSeconds(1).isAfter(lastCommandInputted)){
+            this.queuedCommand = queuedCommand;
+            lastCommandInputted = LocalDateTime.now();
+        }
     }
 }

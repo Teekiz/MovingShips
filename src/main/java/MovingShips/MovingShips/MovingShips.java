@@ -3,6 +3,7 @@ package MovingShips.MovingShips;
 import MovingShips.MovingShips.commands.*;
 import MovingShips.MovingShips.events.CommandMovementListener;
 import MovingShips.MovingShips.tabcompleters.CreateShipTabCompleter;
+import MovingShips.MovingShips.tabcompleters.MoveShipTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import MovingShips.MovingShips.scheduletasks.ShipMover;
@@ -31,7 +32,10 @@ public final class MovingShips extends JavaPlugin {
         Bukkit.getLogger().info("MovingShips Plugin Enabled");
         getCommand("createship").setExecutor(new CreateShip());
         getCommand("createship").setTabCompleter(new CreateShipTabCompleter());
+
         getCommand("moveship").setExecutor(new MoveShip());
+        getCommand("moveship").setTabCompleter(new MoveShipTabCompleter());
+
         getCommand("setshipcontrols").setExecutor(new SetShipControls());
         getCommand("rotateship").setExecutor(new RotateShip());
         getCommand("setshipforwarddirection").setExecutor(new SetShipForwardDirection());

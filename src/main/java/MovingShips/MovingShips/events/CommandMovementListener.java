@@ -1,6 +1,7 @@
 package MovingShips.MovingShips.events;
 
 import MovingShips.MovingShips.ships.Ship;
+import MovingShips.MovingShips.utility.PermissionCheck;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +24,7 @@ public class CommandMovementListener implements Listener {
 
         if (event.getClickedBlock() == null) {}
 
-        for (Ship ship : shipAccess.getShipByOwnerName(player.getName())) {
+        for (Ship ship : shipAccess.getShips()) {
             for (Map.Entry<String, Location> pair : ship.getShipControlLocations().entrySet()) {
                 if (pair.getValue().getBlock().getLocation().equals(event.getClickedBlock().getLocation())) {
                     command = pair.getKey();
@@ -39,26 +40,28 @@ public class CommandMovementListener implements Listener {
 
     //todo - let players assign others to be able to use the ship
     public void shipControlClicked(String command, Ship ship, Player player){
-        if (command.equalsIgnoreCase("forward")) {
-            if (ship.getSpeed() >= 3){
-                ship.setSpeed(3);
-            } else {
-                ship.setSpeed(ship.getSpeed()+1);
+        if (PermissionCheck.hasPermission(ship, player)){
+            if (command.equalsIgnoreCase("forward")) {
+                if (ship.getSpeed() >= 3){
+                    ship.setSpeed(3);
+                } else {
+                    ship.setSpeed(ship.getSpeed()+1);
+                }
+            } else if (command.equalsIgnoreCase("back")) {
+                if (ship.getSpeed() <= -1){
+                    ship.setSpeed(-1);
+                } else {
+                    ship.setSpeed(ship.getSpeed()-1);
+                }
+            } else if (command.equalsIgnoreCase("right")) {
+                ship.setQueuedCommand("right");
+            } else if (command.equalsIgnoreCase("left")) {
+                ship.setQueuedCommand("left");
+            } else if (command.equalsIgnoreCase("rotateRight")){
+                ship.setQueuedCommand("rotateRight");
+            } else if (command.equalsIgnoreCase("rotateLeft")) {
+                ship.setQueuedCommand("rotateLeft");
             }
-        } else if (command.equalsIgnoreCase("back")) {
-            if (ship.getSpeed() <= -1){
-                ship.setSpeed(-1);
-            } else {
-                ship.setSpeed(ship.getSpeed()-1);
-            }
-        } else if (command.equalsIgnoreCase("right")) {
-            ship.setQueuedCommand("right");
-        } else if (command.equalsIgnoreCase("left")) {
-            ship.setQueuedCommand("left");
-        } else if (command.equalsIgnoreCase("rotateRight")){
-            ship.setQueuedCommand("rotateRight");
-        } else if (command.equalsIgnoreCase("rotateLeft")) {
-            ship.setQueuedCommand("rotateLeft");
         }
     }
 }

@@ -2,10 +2,14 @@ name: MovingShips
 version: '${project.version}'
 main: MovingShips.MovingShips.MovingShips
 api-version: 1.19
+permissions:
+  movingships.admin:
+    description: allows the player to move/rotate or delete a ship regardless if they own the ship or not.
+    default: op
 commands:
   moveship:
     description: Moves the ship.
-    usage: /ship moveship name axis amount
+    usage: /moveship <Forward/Back/Left/Right> <Distance> <Name of ship>
     aliases:
     permission: moveship
     permission-message: You do not have permission to move a ship.

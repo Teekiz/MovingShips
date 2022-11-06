@@ -16,10 +16,10 @@ public class ShipMover  {
             if (ship.getSpeed() != 0){
                 if (ship.getSpeed() > 0){
                     if (ship.getQueuedCommand() != null){ queuedCommand(ship);}
-                    moveShip.moveShip(ship, "forward", ship.getSpeed(), Bukkit.getPlayer(ship.getOwnerName()));
+                    moveShip.moveShip(ship, "forward", ship.getSpeed(), Bukkit.getPlayer(ship.getOwnerName()), false);
                 } else if (ship.getSpeed() < 0){
                     if (ship.getQueuedCommand() != null){ queuedCommand(ship);}
-                    moveShip.moveShip(ship, "back", ship.getSpeed(), Bukkit.getPlayer(ship.getOwnerName()));
+                    moveShip.moveShip(ship, "back", ship.getSpeed(), Bukkit.getPlayer(ship.getOwnerName()), false);
                 }
             } else if (ship.getQueuedCommand() != null){
                 queuedCommand(ship);
@@ -28,10 +28,10 @@ public class ShipMover  {
     }
     public void queuedCommand(Ship ship){
         if (ship.getQueuedCommand().equalsIgnoreCase("left")) {
-            moveShip.moveShip(ship, "left", 1, Bukkit.getPlayer(ship.getOwnerName()));
+            moveShip.moveShip(ship, "left", 1, Bukkit.getPlayer(ship.getOwnerName()), false);
             ship.setQueuedCommand(null);
         } else if (ship.getQueuedCommand().equalsIgnoreCase("right")){
-            moveShip.moveShip(ship, "right", 1, Bukkit.getPlayer(ship.getOwnerName()));
+            moveShip.moveShip(ship, "right", 1, Bukkit.getPlayer(ship.getOwnerName()), false);
             ship.setQueuedCommand(null);
         } else if (ship.getQueuedCommand().equalsIgnoreCase("rotateLeft")){
             rotateShip.rotateShip(ship, "left", Bukkit.getPlayer(ship.getOwnerName()));

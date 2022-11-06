@@ -1,5 +1,7 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.utility.PermissionCheck;
+import MovingShips.MovingShips.utility.PlayersOnShip;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,12 +11,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.ships.ShipAccess;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MoveShip implements CommandExecutor {
+public class MoveShip  implements CommandExecutor {
 
     ShipAccess shipAccess = ShipAccess.getInstance();
     Ship selectedShip;
@@ -28,37 +32,61 @@ public class MoveShip implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("Only players can use this command.");
+            commandSender.sendMessage("<MovingShips> Only players can use this command.");
         }
 
         //todo handle exception for invalid args2
 
         Player player = (Player) commandSender;
-
-        if (args.length == 3){
-            shipName = args[0];
-            direction = args[1];
-            directionAmount = Integer.parseInt(args[2]);
-            selectedShip = shipAccess.getShipByName(shipName);
-
-            if (selectedShip == null) {
-                player.sendMessage("Cannot find ship.");
+        try {
+            if (args.length < 3){
+                player.sendMessage("<MovingShips> MoveShip arguments: <Forward/Back/Left/Right> <Distance> <Name of Ship>.");
             } else {
-                if (!direction.equalsIgnoreCase("forward")  && !direction.equalsIgnoreCase("back") &&
-                        !direction.equalsIgnoreCase("left") && !direction.equalsIgnoreCase("right")){
-                    moveShip(selectedShip, direction, directionAmount, player);
+                direction = args[0];
+                directionAmount = Integer.parseInt(args[1]);
+                shipName = "";
+
+                //for the ship name
+                List<String> arguments = new ArrayList<>();
+                for (String argument : args) {
+                    arguments.add(argument);
+                }
+
+                //to add spaces between the names
+                for (int i = 2; i < arguments.size(); i++) {
+                    if (i == arguments.size() - 1) {
+                        shipName += arguments.get(i);
+                    } else {
+                        shipName += arguments.get(i) + " ";
+                    }
+                }
+
+                selectedShip = shipAccess.getShipByName(shipName);
+
+                if (selectedShip == null) {
+                    player.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");
                 } else {
-                    player.sendMessage("Invalid direction.");
+                    if (direction.equalsIgnoreCase("forward")  || direction.equalsIgnoreCase("back") ||
+                            direction.equalsIgnoreCase("left") || direction.equalsIgnoreCase("right")){
+                        if (PermissionCheck.hasPermission(selectedShip, player)){
+                            moveShip(selectedShip, direction, directionAmount, player, true);
+                        } else {
+                            player.sendMessage("§4§ <MovingShips> You do not have permission to move this ship.");
+                        }
+                    } else {
+                        player.sendMessage("§4§ <MovingShips> Invalid direction. Please use either forward, back, left or right.");
+                    }
                 }
             }
-        } else {
-            player.sendMessage("Invalid use of command");
+        } catch (Exception e){
+            player.sendMessage("§4§ <MovingShips> Invalid command usage. Proper command usage: /MoveShip <Forward/Back/Left/Right> <Distance> <Name of Ship>.");
         }
+
         return true;
 
     }
     //moves the ship in one direction by specified amount
-    public void moveShip(Ship ship, String directionCommand, int directionAmount, Player player) {
+    public void moveShip(Ship ship, String directionCommand, int directionAmount, Player player, boolean isCommand) {
 
         direction = ship.getFrontDirection();
         directionValue = ship.getFrontDirectionValue();
@@ -97,16 +125,25 @@ public class MoveShip implements CommandExecutor {
             }
         }
 
+        //handles the commands, as the value should really only be above 0, back should only ever be called.
+        if (isCommand && direction.equalsIgnoreCase("forward") && directionAmount < 0){
+            directionAmount = Math.abs(directionAmount);
+        } else if (isCommand && direction.equalsIgnoreCase("back") && directionAmount > 0){
+            directionAmount = -directionAmount;
+        }
+
         if (!isClearToMove(ship, direction, directionAmount)) {
-            player.sendMessage("Target location would place one or blocks inside another block.");
+            player.sendMessage("§4§ <MovingShips> Target location would place one or more blocks inside another block.");
             ship.setSpeed(0);
+            ship.setQueuedCommand(null);
         } else {
             shipBlocksNew = new HashMap<>();
-            movePlayer(direction, directionAmount, getPlayersOnShip(ship));
+            PlayersOnShip.movePlayer(direction, directionAmount, PlayersOnShip.getPlayersOnShip(ship));
 
-            if (getPlayersOnShip(ship).size() == 0){
+            //if the player uses the command version, it skips this as the command is a one time thing.
+            if (PlayersOnShip.getPlayersOnShip(ship).size() == 0 && !isCommand){
                 ship.setSpeed(0);
-                player.sendMessage(ship.getShipName() + " speed set to 0 because no players are onboard.");
+                player.sendMessage("<MovingShips> " + ship.getShipName() + " speed set to 0 because no players are onboard.");
                 return;
             }
 
@@ -183,43 +220,5 @@ public class MoveShip implements CommandExecutor {
             }
         }
         return false;
-    }
-
-    //used to find all the players on the ship
-    public ArrayList<Player> getPlayersOnShip(Ship ship){
-        ArrayList<Player> players = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()){
-            for (Location location : ship.getShipBlocks().keySet()){
-                    if (player.getLocation().getWorld().equals(location.getWorld())){
-                        int playerY = player.getLocation().getBlockY();
-                        int playerX = player.getLocation().getBlockX();
-                        int playerZ = player.getLocation().getBlockZ();
-
-                        int locationY = location.getBlockY();
-                        int locationX = location.getBlockX();
-                        int locationZ = location.getBlockZ();
-
-                        //first checks X and Z, then Y. Y accounts for either standing or jumping.
-                        if (Integer.compare(playerX, locationX) == 0  && Integer.compare(playerZ, locationZ) == 0){
-                            if (Integer.compare(playerY - 1, locationY) == 0 || Integer.compare(playerY - 2, locationY) == 0){
-                                if (!players.contains(player)){players.add(player);}
-                            }
-                        }
-                    }
-            }
-        }
-        return players;
-    }
-
-    public void movePlayer(String direction, int directionAmount, ArrayList<Player> playersOnShip){
-        for (Player player : playersOnShip){
-            Location teleportLocation = player.getLocation();
-            if (direction.equalsIgnoreCase("X")){
-                teleportLocation.setX(teleportLocation.getX() + directionAmount);
-            } else if (direction.equalsIgnoreCase("Z")){
-                teleportLocation.setZ(teleportLocation.getZ() + directionAmount);
-            }
-            player.teleport(teleportLocation);
-        }
     }
 }

@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.utility.PlayersOnShip;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +36,6 @@ public class RotateShip implements CommandExecutor {
         return true;
     }
 
-    //todo update shipcontrol locations
     public void rotateShip(Ship ship, String directionRotate, Player player) {
         Location centerBlock = ship.getShipControlLocations().get("forward").getBlock().getLocation();
         HashMap<Location, Material> shipBlocksNew = new HashMap<>();
@@ -43,10 +43,11 @@ public class RotateShip implements CommandExecutor {
         if (!isClearToRotate(ship, directionRotate, centerBlock)) {
             player.sendMessage("Target location would place one or blocks inside another block.");
             ship.setSpeed(0);
+            ship.setQueuedCommand(null);
             return;
         }
 
-        movePlayer(directionRotate, centerBlock, getPlayersOnShip(ship));
+        PlayersOnShip.movePlayerRotate(directionRotate, centerBlock, PlayersOnShip.getPlayersOnShip(ship));
 
         for (Map.Entry<Location, Material> pair : ship.getShipBlocks().entrySet()) {
             shipBlocksNew.put(pair.getKey(), pair.getValue());
@@ -154,66 +155,6 @@ public class RotateShip implements CommandExecutor {
             } else if (forwardDirection.equalsIgnoreCase("Z") && fowardDirectionValue.equalsIgnoreCase("-")){
                 ship.setFrontDirection("X"); ship.setFrontDirectionValue("+");
             }
-        }
-    }
-
-    public ArrayList<Player> getPlayersOnShip(Ship ship){
-        ArrayList<Player> players = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()){
-            for (Location location : ship.getShipBlocks().keySet()){
-                if (player.getLocation().getWorld().equals(location.getWorld())){
-                    int playerY = player.getLocation().getBlockY();
-                    int playerX = player.getLocation().getBlockX();
-                    int playerZ = player.getLocation().getBlockZ();
-
-                    int locationY = location.getBlockY();
-                    int locationX = location.getBlockX();
-                    int locationZ = location.getBlockZ();
-
-                    //first checks X and Z, then Y. Y accounts for either standing or jumping.
-                    if (Integer.compare(playerX, locationX) == 0  && Integer.compare(playerZ, locationZ) == 0){
-                        if (Integer.compare(playerY - 1, locationY) == 0 || Integer.compare(playerY - 2, locationY) == 0){
-                            if (!players.contains(player)){players.add(player);}
-                        }
-                    }
-                }
-            }
-        }
-        return players;
-    }
-
-    //todo - fix yaw
-    public void movePlayer(String directionRotate, Location centerBlock, ArrayList<Player> playersOnShip){
-
-        //rotation double based on code provided by worthless_hobo
-        //https://www.spigotmc.org/threads/how-do-i-get-the-direction-the-player-is-facing.433419/
-
-        for (Player player : playersOnShip){
-            Location location = player.getLocation();
-            float differenceZ = centerBlock.getBlock().getZ() - location.getBlock().getZ();
-            float differenceX = centerBlock.getBlock().getX() - location.getBlock().getX();
-            float rotation = 0;
-            if (directionRotate.equalsIgnoreCase("left")){
-                location.setX(centerBlock.getBlock().getX() - differenceZ);
-                location.setZ(centerBlock.getBlock().getZ() + differenceX);
-                rotation = player.getLocation().getYaw() - 90;
-            } else if (directionRotate.equalsIgnoreCase("right")){
-                location.setX(centerBlock.getBlock().getX() + differenceZ);
-                location.setZ(centerBlock.getBlock().getZ() - differenceX);
-                rotation = player.getLocation().getYaw() + 90;
-            }
-            if (rotation > 180) {
-                float over = rotation - 180;
-                rotation = -180 + over;
-            }
-            else if (rotation < -180) {
-                float over = rotation + 180;
-                rotation = 180 - over;
-            }
-
-            Location teleportLocation = new Location(centerBlock.getWorld(), location.getBlockX(),
-                    location.getBlockY(), location.getBlockZ(), rotation, location.getPitch());
-            player.teleport(teleportLocation);
         }
     }
 }
