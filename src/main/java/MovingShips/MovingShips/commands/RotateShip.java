@@ -13,6 +13,7 @@ import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RotateShip implements CommandExecutor {
@@ -24,14 +25,42 @@ public class RotateShip implements CommandExecutor {
         }
 
         Player player = (Player) commandSender;
+        try {
+            if (args.length < 2){
+                player.sendMessage("<MovingShips> RotateShip arguments: <Left/Right> <Name of Ship>.");
+            } else {
 
-        if (args.length == 0 || args.length < 2){
-            player.sendMessage("Please provide a ship name and rotation direction.");
-            return true;
-        } else {
-            Ship ship = shipAccess.getShipByName(args[0]);
-            String direction = args[1];
-            rotateShip(ship, direction,  player);
+                String shipName = "";
+                //for the ship name
+                List<String> arguments = new ArrayList<>();
+                for (String argument : args) {
+                    arguments.add(argument);
+                }
+
+                //to add spaces between the names
+                for (int i = 1; i < arguments.size(); i++) {
+                    if (i == arguments.size() - 1) {
+                        shipName += arguments.get(i);
+                    } else {
+                        shipName += arguments.get(i) + " ";
+                    }
+                }
+
+                Ship ship = shipAccess.getShipByName(shipName);
+                String direction = args[0];
+
+                if (ship != null){
+                    if (direction.equalsIgnoreCase("left") || direction.equalsIgnoreCase("right")){
+                        rotateShip(ship, direction,  player);
+                    } else {
+                        player.sendMessage("§4§ <MovingShips> Invalid direction. Please use either left or right.");
+                    }
+                } else {
+                    player.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");
+                }
+            }
+        } catch (Exception e){
+            player.sendMessage("§4§ <MovingShips> Invalid command usage. Proper command usage: /RotateShip <Name of Ship> <Left/Right>.");
         }
         return true;
     }
@@ -41,7 +70,7 @@ public class RotateShip implements CommandExecutor {
         HashMap<Location, Material> shipBlocksNew = new HashMap<>();
 
         if (!isClearToRotate(ship, directionRotate, centerBlock)) {
-            player.sendMessage("Target location would place one or blocks inside another block.");
+            player.sendMessage("§4§ <MovingShips> Target location would place one or more blocks inside another block.");
             ship.setSpeed(0);
             ship.setQueuedCommand(null);
             return;
