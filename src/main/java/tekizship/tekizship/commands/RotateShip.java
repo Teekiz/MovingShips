@@ -82,7 +82,7 @@ public class RotateShip implements CommandExecutor {
             }
             newShipControlLocation.put(pair.getKey(), newLocation);
         }
-        ship.setFrontDirection(updateDirection(ship, directionRotate));
+        updateDirection(ship, directionRotate);
         ship.setShipControlLocations(newShipControlLocation);
         ship.setShipBlocks(shipBlocksNew);
 
@@ -130,20 +130,30 @@ public class RotateShip implements CommandExecutor {
         return false;
     }
 
-    public String updateDirection(Ship ship, String directionRotate){
+    public void updateDirection(Ship ship, String directionRotate){
         String forwardDirection = ship.getFrontDirection();
+        String fowardDirectionValue = ship.getFrontDirectionValue();
         if (directionRotate.equalsIgnoreCase("left")){
-            if (forwardDirection.equalsIgnoreCase("X-")){ return "Z+";}
-            else if (forwardDirection.equalsIgnoreCase("Z+")) {return "X+";}
-            else if (forwardDirection.equalsIgnoreCase("X+")) {return "Z-";}
-            else if (forwardDirection.equalsIgnoreCase("Z-")) {return "X-";}
+            if (forwardDirection.equalsIgnoreCase("X") && fowardDirectionValue.equalsIgnoreCase("-")){
+                ship.setFrontDirection("Z"); ship.setFrontDirectionValue("+");
+            } else if (forwardDirection.equalsIgnoreCase("Z") && fowardDirectionValue.equalsIgnoreCase("+")){
+                ship.setFrontDirection("X"); ship.setFrontDirectionValue("+");
+            } else if (forwardDirection.equalsIgnoreCase("X") && fowardDirectionValue.equalsIgnoreCase("+")){
+                ship.setFrontDirection("Z"); ship.setFrontDirectionValue("-");
+            } else if (forwardDirection.equalsIgnoreCase("Z") && fowardDirectionValue.equalsIgnoreCase("-")){
+                ship.setFrontDirection("X"); ship.setFrontDirectionValue("-");
+            }
         } else if (directionRotate.equalsIgnoreCase("right")){
-            if (forwardDirection.equalsIgnoreCase("Z+")){ return "X-";}
-            else if (forwardDirection.equalsIgnoreCase("X-")) {return "Z-";}
-            else if (forwardDirection.equalsIgnoreCase("Z-")) {return "X+";}
-            else if (forwardDirection.equalsIgnoreCase("X+")) {return "Z+";}
+            if (forwardDirection.equalsIgnoreCase("X") && fowardDirectionValue.equalsIgnoreCase("-")){
+                ship.setFrontDirection("Z"); ship.setFrontDirectionValue("-");
+            } else if (forwardDirection.equalsIgnoreCase("Z") && fowardDirectionValue.equalsIgnoreCase("+")){
+                ship.setFrontDirection("X"); ship.setFrontDirectionValue("-");
+            } else if (forwardDirection.equalsIgnoreCase("X") && fowardDirectionValue.equalsIgnoreCase("+")){
+                ship.setFrontDirection("Z"); ship.setFrontDirectionValue("+");
+            } else if (forwardDirection.equalsIgnoreCase("Z") && fowardDirectionValue.equalsIgnoreCase("-")){
+                ship.setFrontDirection("X"); ship.setFrontDirectionValue("+");
+            }
         }
-        return null;
     }
 
     public ArrayList<Player> getPlayersOnShip(Ship ship){

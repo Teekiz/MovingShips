@@ -105,9 +105,10 @@ public class SetupShip implements CommandExecutor {
 
                 String nameOfShip = shipSetup.getShipName();
                 String direction = shipSetup.getShipDirection();
+                String directionValue = shipSetup.getShipDirectionValue();
 
                 createShip.createShip(firstLocation, secondLocation, nameOfShip, player, player.getWorld());
-                setShipForwardDirection.setShipDirection(shipAccess.getShipByName(nameOfShip), player, direction);
+                setShipForwardDirection.setShipDirection(shipAccess.getShipByName(nameOfShip), player, direction, directionValue);
 
                 setShipControls.setControl(nameOfShip, "forward", forwardLocation, player);
                 setShipControls.setControl(nameOfShip, "back", backLocation, player);
@@ -263,10 +264,12 @@ public class SetupShip implements CommandExecutor {
             }
 
             if (shipSetup.isFirstAndSecondLocationSet() && shipSetup.getShipDirection() == null && isSet) {
-                String direction = setShipForwardDirection.getShipDirection(player);
-                player.sendMessage("Ship direction set to " + direction + ".");
+                String direction = setShipForwardDirection.getShipDirection(player).get(0);
+                String directionValue = setShipForwardDirection.getShipDirection(player).get(1);
+                player.sendMessage("Ship direction set to " + direction + directionValue + ".");
                 player.sendMessage("Please use '/ShipSetup confirm' to continue or '/ShipSetup cancel' to restart.");
                 shipSetup.setShipDirection(direction);
+                shipSetup.setShipDirectionValue(directionValue);
 
             }
 

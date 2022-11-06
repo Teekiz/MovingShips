@@ -6,9 +6,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.A;
 import tekizship.tekizship.ships.Ship;
 import tekizship.tekizship.ships.ShipAccess;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class SetShipForwardDirection implements CommandExecutor {
@@ -28,31 +31,38 @@ public class SetShipForwardDirection implements CommandExecutor {
         } else {
             Ship ship = shipAccess.getShipByName(args[0]);
             Set<Material> set = null;
-            String direction = getShipDirection(player);
-            setShipDirection(ship, player, direction);
+            String direction = getShipDirection(player).get(0);
+            String directionValue = getShipDirection(player).get(1);
+            setShipDirection(ship, player, direction, directionValue);
         }
         return true;
     }
 
-    public String getShipDirection(Player player){
+    public List<String> getShipDirection(Player player){
         String direction;
+        String directionValue;
+        List<String> directions = new ArrayList<>();
+
         //rotation double based on code provided by worthless_hobo
         //https://www.spigotmc.org/threads/how-do-i-get-the-direction-the-player-is-facing.433419/
 
         double rotation = (player.getLocation().getYaw() - 180) % 360;
         if (rotation < 0) { rotation += 360.0;}
 
-        if (rotation >= 45 && rotation < 135){ direction = "X+";}
-        else if (rotation >= 135 && rotation < 225) {direction = "Z+";}
-        else if (rotation >= 225 && rotation < 315) {direction = "X-";}
-        else {direction = "Z-";}
+        if (rotation >= 45 && rotation < 135){ direction = "X"; directionValue ="+";}
+        else if (rotation >= 135 && rotation < 225) { direction = "Z"; directionValue ="+";}
+        else if (rotation >= 225 && rotation < 315) { direction = "X"; directionValue ="-";}
+        else { direction = "Z"; directionValue ="-";}
 
-        return direction;
+        directions.add(direction);
+        directions.add(directionValue);
+        return directions;
     }
 
-    public void setShipDirection(Ship ship, Player player, String direction){
+    public void setShipDirection(Ship ship, Player player, String direction, String directionValue){
         ship.setFrontDirection(direction);
-        player.sendMessage("Set ship forward direction to " + direction + ".");
+        ship.setFrontDirectionValue(directionValue);
+        player.sendMessage("Set ship forward direction to " + direction + directionValue + ".");
         shipAccess.saveShip();
     }
 }

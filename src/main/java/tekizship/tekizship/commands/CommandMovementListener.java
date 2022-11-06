@@ -34,69 +34,33 @@ public class CommandMovementListener implements Listener {
             }
         }
 
-        if (command != null && frontDirection != null && selectedShip != null){
-            shipControlClicked(command, frontDirection, selectedShip, player);
+        if (command != null && frontDirection != null){
+            shipControlClicked(command, selectedShip, player);
         }
     }
 
     //todo - let players assign others to be able to use the ship
-    public void shipControlClicked(String command, String frontDirection, Ship ship, Player player){
+    public void shipControlClicked(String command, Ship ship, Player player){
         MoveShip moveShip = new MoveShip();
         RotateShip rotateShip = new RotateShip();
 
-        char[] frontDirectionSplit = frontDirection.toCharArray();
-        //direction = X or Z, negativeOrPositive = + or -
-        String direction = String.valueOf(frontDirectionSplit[0]);
-        String negativeOrPositive = String.valueOf(frontDirectionSplit[1]);
-        String directionOpposite = "";
-
-        if (direction.equalsIgnoreCase("X")) {
-            directionOpposite = "Z";
-        } else if (direction.equalsIgnoreCase("Z")) {
-            directionOpposite = "X";
-        }
-
         //todo change to speed
         if (command.equalsIgnoreCase("forward")) {
-            if (negativeOrPositive.equalsIgnoreCase("+")) {
-                moveShip.moveShip(ship, direction, 1, player);
+            if (ship.getSpeed() >= 3){
+                ship.setSpeed(3);
             } else {
-                moveShip.moveShip(ship, direction, -1, player);
+                ship.setSpeed(ship.getSpeed()+1);
             }
         } else if (command.equalsIgnoreCase("back")) {
-            if (negativeOrPositive.equalsIgnoreCase("+")) {
-                moveShip.moveShip(ship, direction, -1, player);
+            if (ship.getSpeed() <= -1){
+                ship.setSpeed(-1);
             } else {
-                moveShip.moveShip(ship, direction, 1, player);
+                ship.setSpeed(ship.getSpeed()-1);
             }
         } else if (command.equalsIgnoreCase("right")) {
-            if (direction.equalsIgnoreCase("X")){
-                if (negativeOrPositive.equalsIgnoreCase("+")) {
-                    moveShip.moveShip(ship, directionOpposite, 1, player);
-                } else {
-                    moveShip.moveShip(ship, directionOpposite, -1, player);
-                }
-            } else {
-                if (negativeOrPositive.equalsIgnoreCase("+")) {
-                    moveShip.moveShip(ship, directionOpposite, -1, player);
-                } else {
-                    moveShip.moveShip(ship, directionOpposite, 1, player);
-                }
-            }
+            moveShip.moveShip(ship, "right", 1, player);
         } else if (command.equalsIgnoreCase("left")) {
-            if (direction.equalsIgnoreCase("X")){
-                if (negativeOrPositive.equalsIgnoreCase("+")) {
-                    moveShip.moveShip(ship, directionOpposite, -1, player);
-                } else {
-                    moveShip.moveShip(ship, directionOpposite, 1, player);
-                }
-            } else {
-                if (negativeOrPositive.equalsIgnoreCase("+")) {
-                    moveShip.moveShip(ship, directionOpposite, 1, player);
-                } else {
-                    moveShip.moveShip(ship, directionOpposite, -1, player);
-                }
-            }
+            moveShip.moveShip(ship, "left", 1, player);
         } else if (command.equalsIgnoreCase("rotateRight")){
             rotateShip.rotateShip(ship, "right", player);
         } else if (command.equalsIgnoreCase("rotateLeft")) {

@@ -14,6 +14,7 @@ public class ShipSetup {
     Location secondLocation;
 
     String shipDirection;
+    String shipDirectionValue;
 
     String shipName;
 
@@ -116,6 +117,14 @@ public class ShipSetup {
         this.rotateRight = rotateRight;
     }
 
+    public String getShipDirectionValue() {
+        return shipDirectionValue;
+    }
+
+    public void setShipDirectionValue(String shipDirectionValue) {
+        this.shipDirectionValue = shipDirectionValue;
+    }
+
     //these are just to save writing it so much in the if statements for setup ship.
     public boolean isFirstAndSecondLocationSet(){
         if (getFirstLocation() != null && getSecondLocation() != null){
@@ -125,7 +134,7 @@ public class ShipSetup {
     }
 
     public boolean isDirectionAndFirstAndSecondLocationSet(){
-        if (getFirstLocation() != null && getSecondLocation() != null && getShipDirection() != null){
+        if (getFirstLocation() != null && getSecondLocation() != null && getShipDirection() != null && getShipDirectionValue() != null){
             return true;
         }
         return false;

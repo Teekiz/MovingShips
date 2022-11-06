@@ -20,6 +20,7 @@ public class MoveShip implements CommandExecutor {
     Ship selectedShip;
     String shipName;
     String direction;
+    String directionValue;
     int directionAmount;
     HashMap<Location, Material> shipBlocksNew;
     Location destinationBlock;
@@ -45,10 +46,41 @@ public class MoveShip implements CommandExecutor {
 
     }
     //moves the ship in one direction by specified amount
-    public void moveShip(Ship ship, String direction, int directionAmount, Player player) {
+    public void moveShip(Ship ship, String directionCommand, int directionAmount, Player player) {
+
+        //todo fix direction.
+        direction = ship.getFrontDirection();
+        directionValue = ship.getFrontDirectionValue();
+
+        if (directionCommand.equalsIgnoreCase("left")){
+            if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("-")){
+                direction = "Z";
+            } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("+")){
+                direction = "X";
+            } else if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("+")){
+                direction = "X";
+                directionAmount = -directionAmount;
+            } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("-")){
+                direction = "X";
+                directionAmount = -directionAmount;
+            }
+        } else if (directionCommand.equalsIgnoreCase("right")){
+            if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("-")){
+                direction = "Z";
+                directionAmount = -directionAmount;
+            } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("-")){
+                direction = "X";
+            } else if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("+")){
+                direction = "X";
+            } else if (direction.equalsIgnoreCase("Z") && directionValue.equalsIgnoreCase("+")){
+                direction = "X";
+                directionAmount = -directionAmount;
+            }
+        }
 
         if (!isClearToMove(ship, direction, directionAmount)) {
             player.sendMessage("Target location would place one or blocks inside another block.");
+            ship.setSpeed(0);
         } else {
             shipBlocksNew = new HashMap<>();
             movePlayer(direction, directionAmount, getPlayersOnShip(ship));
@@ -66,7 +98,6 @@ public class MoveShip implements CommandExecutor {
             for (Map.Entry<Location, Material> pair : shipBlocksNew.entrySet()) {
                 if (direction.equalsIgnoreCase("X")) {
                     pair.getKey().setX(pair.getKey().getX() + directionAmount);
-
                 } else if (direction.equalsIgnoreCase("Z")) {
                     pair.getKey().setZ(pair.getKey().getZ() + directionAmount);
                 }
@@ -80,7 +111,7 @@ public class MoveShip implements CommandExecutor {
                 Location newLocation = pair.getValue();
                 if (direction.equalsIgnoreCase("X")) {
                     newLocation.setX(pair.getValue().getX() + directionAmount);
-                } else {
+                } else if (direction.equalsIgnoreCase("Z")) {
                     newLocation.setZ(pair.getValue().getZ() + directionAmount);
                 }
                 newShipControlLocation.put(pair.getKey(), newLocation);

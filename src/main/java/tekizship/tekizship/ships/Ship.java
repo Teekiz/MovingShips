@@ -1,9 +1,11 @@
 package tekizship.tekizship.ships;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +24,13 @@ public class Ship {
     //todo queue the commands
     List<String> queuedCommands;
     String frontDirection;
+    String frontDirectionValue;
 
     //todo - record the current speed for forward
     int speed = 0;
+
+    //this is to ensure that a ship can only add one command per second
+    LocalDateTime lastCommandInputted = LocalDateTime.now();
 
 
     public Ship(String ShipName, String ownerName, HashMap<Location, Material> shipBlocks) {
@@ -58,6 +64,8 @@ public class Ship {
         return shipControls;
     }
     public ArrayList<String> getCrew() {return crewNames;}
+
+    public String getFrontDirectionValue() {return frontDirectionValue;}
 
     public void setShipName(String shipName) {this.shipName = shipName;}
 
@@ -102,6 +110,9 @@ public class Ship {
         player.sendMessage("Control " + controlName + " successfully set to ship: " + shipName + ".");
     }
 
+    public void setFrontDirectionValue(String frontDirectionValue) {
+        this.frontDirectionValue = frontDirectionValue;
+    }
     public void setCrew(ArrayList <String> crewNames){
         this.crewNames = crewNames;
     }
@@ -109,4 +120,18 @@ public class Ship {
     public void addCrew(String crewName){ crewNames.add(crewName);}
 
     public void deleteCrew(String crewName){crewNames.remove(crewName);}
+
+    public int getSpeed(){
+        return speed;
+    }
+
+    public void setSpeed(int speed){
+        if (LocalDateTime.now().minusSeconds(1).isAfter(lastCommandInputted)){
+            this.speed = speed;
+            Bukkit.getPlayer(getOwnerName()).sendMessage(String.valueOf(speed));
+            Bukkit.getPlayer(getOwnerName()).sendMessage(frontDirection);
+            lastCommandInputted = LocalDateTime.now();
+
+        }
+    }
 }

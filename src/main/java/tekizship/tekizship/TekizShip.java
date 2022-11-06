@@ -3,6 +3,7 @@ package tekizship.tekizship;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import tekizship.tekizship.commands.*;
+import tekizship.tekizship.scheduletasks.ShipMover;
 import tekizship.tekizship.ships.ShipAccess;
 
 
@@ -10,7 +11,6 @@ public final class TekizShip extends JavaPlugin {
 
     private static TekizShip plugin;
 
-    //todo create a save and load system
     //todo create the tick system
     //todo add command listeners
     //todo add crew system
@@ -20,6 +20,8 @@ public final class TekizShip extends JavaPlugin {
     //todo to check for special blocks (i.e. ladders) and set them correctly
     //todo setup config file, to set max speed, max amount of ships
     //todo create a delete command
+    //todo check if the ship is actually in water
+    //todo add ship permissions
 
     @Override
     public void onEnable() {
@@ -34,7 +36,15 @@ public final class TekizShip extends JavaPlugin {
         getCommand("setupShip").setExecutor(new SetupShip());
         getServer().getPluginManager().registerEvents(new CommandMovementListener(), this);
         ShipAccess access = ShipAccess.getInstance();
+        ShipMover shipMover = new ShipMover();
         access.loadShip();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                shipMover.moveShips();
+            }
+        }, 0, 60);
     }
 
     @Override

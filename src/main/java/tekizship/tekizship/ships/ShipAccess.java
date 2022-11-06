@@ -73,6 +73,7 @@ public class ShipAccess {
                     JsonShipObject.addProperty("shipName", ship.getShipName());
                     JsonShipObject.addProperty("ownerName", ship.getOwnerName());
                     JsonShipObject.addProperty("frontDirection", ship.getFrontDirection());
+                    JsonShipObject.addProperty("frontDirectionValue", ship.getFrontDirectionValue());
                     JsonArray jsonShipBlocks = new JsonArray();
                     for (Map.Entry<Location, Material> pair : ship.getShipBlocks().entrySet()){
                         JsonObject jsonBlock = new JsonObject();
@@ -135,16 +136,15 @@ public class ShipAccess {
                     String shipName = jsonShip.get("shipName").toString().replace("\"", "");
                     String ownerName = jsonShip.get("ownerName").toString().replace("\"", "");
                     String frontDirection = jsonShip.get("frontDirection").toString().replace("\"", "");
+                    String frontDirectionValue = jsonShip.get("frontDirectionValue").toString().replace("\"", "");
 
                     ship.setShipName(shipName);
                     ship.setOwnerName(ownerName);
                     ship.setFrontDirection(frontDirection);
+                    ship.setFrontDirectionValue(frontDirectionValue);
 
                     HashMap<Location, Material> shipBlocks = new HashMap<>();
                     JsonArray jsonShipBlocks = jsonShip.getAsJsonArray("shipBlocks");
-
-                    Bukkit.getLogger().info(String.valueOf(jsonShipBlocks.size()));
-
                     for (int j = 0; j < jsonShipBlocks.size(); j++) {
                         JsonObject jsonBlock = (JsonObject) jsonShipBlocks.get(j);
                         String jsonWorld = jsonBlock.get("World").toString().replace("\"", "");
@@ -161,9 +161,6 @@ public class ShipAccess {
 
                     HashMap<String, Location> shipControls = new HashMap<>();
                     JsonArray jsonShipControls = jsonShip.getAsJsonArray("controlLocations");
-
-                    Bukkit.getLogger().info(String.valueOf(jsonShipControls.size()));
-
                     for (int k = 0; k < jsonShipControls.size(); k++) {
                         JsonObject jsonControl = (JsonObject) jsonShipControls.get(k);
                         String controlName = jsonControl.get("controlName").toString().replace("\"", "");
@@ -187,10 +184,6 @@ public class ShipAccess {
                     ship.setCrew(crew);
 
                     ships.add(ship);
-
-
-                    Bukkit.getLogger().info(String.valueOf(ship.getShipControlLocations().size()));
-                    Bukkit.getLogger().info(String.valueOf(ship.getShipBlocks().size()));
                 }
 
                 Bukkit.getLogger().info("MovingShips plugin data has been loaded.");
