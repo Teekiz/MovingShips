@@ -12,6 +12,7 @@ import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CreateShip implements CommandExecutor {
 
@@ -20,25 +21,42 @@ public class CreateShip implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String [] args) {
         if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("Only players can use this command.");
+            commandSender.sendMessage("<MovingShips> Only players can use this command.");
         }
 
         Player player = (Player) commandSender;
+        String shipName = "";
 
         if (command.getName().equalsIgnoreCase("createship")){
             try {
-                //todo handle exception for missing values
-                String shipName = args[6];
-                if (shipName.equals("") || shipName.isEmpty() || shipName == null){
-                    player.sendMessage("createship arguments: <x> <y> <z> <x> <y> <z> <ship name>.");
+                if (args.length < 7){
+                    player.sendMessage("<MovingShips> CreateShip arguments: <X1> Y1> <Z1> <X2> <Y2> <Z2> <Name of Ship>.");
+                } else {
+
+                    //for the ship name
+                    List<String> arguments = new ArrayList<>();
+                    for (String argument : args) {
+                        arguments.add(argument);
+                    }
+
+                    //to add spaces between the names
+                    for (int i = 6; i < arguments.size(); i++) {
+                        if (i == arguments.size() - 1) {
+                            shipName += arguments.get(i);
+                        } else {
+                            shipName += arguments.get(i) + " ";
+                        }
+                    }
+
+                    Location startLocation = new Location(player.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+                    Location endLocation = new Location(player.getWorld(), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+
+                    createShip(startLocation, endLocation, shipName, player, player.getWorld());
                 }
 
-                Location startLocation = new Location(player.getWorld(), Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]));
-                Location endLocation = new Location(player.getWorld(), Integer.valueOf(args[3]), Integer.valueOf(args[4]), Integer.valueOf(args[5]));
-                createShip(startLocation, endLocation, shipName, player, player.getWorld());
 
             } catch (Exception e){
-                player.sendMessage("Invalid command usage. Proper command usage: /createship <x> <y> <z> <x> <y> <z> <name of ship>");
+                player.sendMessage("§4§ <MovingShips> Invalid command usage. Proper command usage: /CreateShip <X1> Y1> <Z1> <X2> <Y2> <Z2> <Name of Ship>.");
             }
         }
         return true;
@@ -55,20 +73,20 @@ public class CreateShip implements CommandExecutor {
 
         //checks to see if the current place is empty
         if (shipBlocksCurrent.isEmpty()){
-            player.sendMessage("You have not selected any blocks.");
+            player.sendMessage("§4§ <MovingShips> You have not selected any blocks.");
         } else {
             //returns null if there is no ship by that name
             if ((shipAccess.getShipByName(shipName) == null)) {
                 //return false if no blocks overlap
                 if (!doBlocksOverlap(shipBlocksCurrent)) {
                     shipAccess.createShip(shipName, player.getName(), shipBlocksCurrent);
-                    player.sendMessage("Ship created: " + shipName + ".");
+                    player.sendMessage("<MovingShips> Ship created: " + shipName + ".");
                     shipAccess.saveShip();
                 } else {
-                    player.sendMessage("Cannot create ship. Blocks overlap with another ship.");
+                    player.sendMessage("§4§ <MovingShips> Cannot create ship. One or more blocks overlap with an existing ship.");
                 }
             } else {
-                player.sendMessage("The ship name is taken. Please try another name.");
+                player.sendMessage("§4§ <MovingShips> That ship name is taken. Please try another name.");
             }
         }
     }

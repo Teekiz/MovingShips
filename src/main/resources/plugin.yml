@@ -8,13 +8,13 @@ commands:
     usage: /ship moveship name axis amount
     aliases:
     permission: moveship
-    permission-message: You do not have permission to spawn a ship.
+    permission-message: You do not have permission to move a ship.
   createship:
-    description: Creates the ship.
-    usage: /createship x y z x y z name_of_ship
+    description: Creates a ship.
+    usage: /createship <X1> Y1> <Z1> <X2> <Y2> <Z2> <Name of ship>
     aliases:
     permission: createship
-    permission-message: You do not have permission to spawn a ship.
+    permission-message: You do not have permission to create a ship.
   rotateship:
     description: Rotates the ship.
     usage: /rotateship name_of_ship <left/right>

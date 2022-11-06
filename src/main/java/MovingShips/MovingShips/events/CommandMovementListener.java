@@ -1,4 +1,4 @@
-package MovingShips.MovingShips.commands;
+package MovingShips.MovingShips.events;
 
 import MovingShips.MovingShips.ships.Ship;
 import org.bukkit.Location;
