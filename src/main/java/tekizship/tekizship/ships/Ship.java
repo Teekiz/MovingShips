@@ -15,19 +15,18 @@ public class Ship {
 
     //todo - future versions could use sails up as speed
 
+    //variables stored upon save.
     String shipName;
     String ownerName;
     HashMap<Location, Material> shipBlocks;
     HashMap<String, Location> shipControls;
     ArrayList<String> crewNames;
-
-    //todo queue the commands
-    List<String> queuedCommands;
     String frontDirection;
     String frontDirectionValue;
 
-    //todo - record the current speed for forward
     int speed = 0;
+    //todo queue the commands
+    String queuedCommand;
 
     //this is to ensure that a ship can only add one command per second
     LocalDateTime lastCommandInputted = LocalDateTime.now();
@@ -131,5 +130,13 @@ public class Ship {
             lastCommandInputted = LocalDateTime.now();
 
         }
+    }
+
+    public String getQueuedCommand() {
+        return queuedCommand;
+    }
+
+    public void setQueuedCommand(String queuedCommand) {
+        this.queuedCommand = queuedCommand;
     }
 }

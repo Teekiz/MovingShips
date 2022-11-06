@@ -42,6 +42,7 @@ public class RotateShip implements CommandExecutor {
 
         if (!isClearToRotate(ship, directionRotate, centerBlock)) {
             player.sendMessage("Target location would place one or blocks inside another block.");
+            ship.setSpeed(0);
             return;
         }
 

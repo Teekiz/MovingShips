@@ -19,7 +19,6 @@ public class CommandMovementListener implements Listener {
         shipAccess = ShipAccess.getInstance();
         Player player = event.getPlayer();
         String command = null;
-        String frontDirection = null;
         Ship selectedShip = null;
 
         if (event.getClickedBlock() == null) {}
@@ -28,43 +27,40 @@ public class CommandMovementListener implements Listener {
             for (Map.Entry<String, Location> pair : ship.getShipControlLocations().entrySet()) {
                 if (pair.getValue().getBlock().getLocation().equals(event.getClickedBlock().getLocation())) {
                     command = pair.getKey();
-                    frontDirection = ship.getFrontDirection();
                     selectedShip = ship;
                 }
             }
         }
 
-        if (command != null && frontDirection != null){
+        if (command != null){
             shipControlClicked(command, selectedShip, player);
         }
     }
 
     //todo - let players assign others to be able to use the ship
     public void shipControlClicked(String command, Ship ship, Player player){
-        MoveShip moveShip = new MoveShip();
-        RotateShip rotateShip = new RotateShip();
-
-        //todo change to speed
         if (command.equalsIgnoreCase("forward")) {
             if (ship.getSpeed() >= 3){
                 ship.setSpeed(3);
             } else {
                 ship.setSpeed(ship.getSpeed()+1);
+                player.sendMessage(ship.getShipName() + "speed set to " + ship.getSpeed() + ".");
             }
         } else if (command.equalsIgnoreCase("back")) {
             if (ship.getSpeed() <= -1){
                 ship.setSpeed(-1);
             } else {
                 ship.setSpeed(ship.getSpeed()-1);
+                player.sendMessage(ship.getShipName() + "speed set to " + ship.getSpeed() + ".");
             }
         } else if (command.equalsIgnoreCase("right")) {
-            moveShip.moveShip(ship, "right", 1, player);
+            ship.setQueuedCommand("right");
         } else if (command.equalsIgnoreCase("left")) {
-            moveShip.moveShip(ship, "left", 1, player);
+            ship.setQueuedCommand("left");
         } else if (command.equalsIgnoreCase("rotateRight")){
-            rotateShip.rotateShip(ship, "right", player);
+            ship.setQueuedCommand("rotateRight");
         } else if (command.equalsIgnoreCase("rotateLeft")) {
-            rotateShip.rotateShip(ship, "left", player);
+            ship.setQueuedCommand("rotateLeft");
         }
     }
 }

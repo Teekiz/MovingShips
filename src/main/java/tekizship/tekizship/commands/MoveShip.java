@@ -104,6 +104,11 @@ public class MoveShip implements CommandExecutor {
             shipBlocksNew = new HashMap<>();
             movePlayer(direction, directionAmount, getPlayersOnShip(ship));
 
+            if (getPlayersOnShip(ship).size() == 0){
+                ship.setSpeed(0);
+                return;
+            }
+
             //todo handle special blocks (e.g. ladders), get the face and place them last
 
             //todo set if at a certain level to water

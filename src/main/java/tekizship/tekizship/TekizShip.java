@@ -11,7 +11,6 @@ public final class TekizShip extends JavaPlugin {
 
     private static TekizShip plugin;
 
-    //todo create the tick system
     //todo add command listeners
     //todo add crew system
     //todo add a system to prevent creating or destroying blocks on a ship
