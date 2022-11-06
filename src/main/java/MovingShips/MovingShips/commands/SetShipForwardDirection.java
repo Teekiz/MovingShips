@@ -1,14 +1,12 @@
-package tekizship.tekizship.commands;
+package MovingShips.MovingShips.commands;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.A;
-import tekizship.tekizship.ships.Ship;
-import tekizship.tekizship.ships.ShipAccess;
+import MovingShips.MovingShips.ships.Ship;
+import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.ArrayList;
 import java.util.List;

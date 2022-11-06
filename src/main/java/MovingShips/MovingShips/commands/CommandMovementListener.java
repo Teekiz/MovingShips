@@ -1,12 +1,12 @@
-package tekizship.tekizship.commands;
+package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.ships.Ship;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import tekizship.tekizship.ships.Ship;
-import tekizship.tekizship.ships.ShipAccess;
+import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.Map;
 
@@ -44,14 +44,12 @@ public class CommandMovementListener implements Listener {
                 ship.setSpeed(3);
             } else {
                 ship.setSpeed(ship.getSpeed()+1);
-                player.sendMessage(ship.getShipName() + "speed set to " + ship.getSpeed() + ".");
             }
         } else if (command.equalsIgnoreCase("back")) {
             if (ship.getSpeed() <= -1){
                 ship.setSpeed(-1);
             } else {
                 ship.setSpeed(ship.getSpeed()-1);
-                player.sendMessage(ship.getShipName() + "speed set to " + ship.getSpeed() + ".");
             }
         } else if (command.equalsIgnoreCase("right")) {
             ship.setQueuedCommand("right");

@@ -1,4 +1,4 @@
-package tekizship.tekizship.ships;
+package MovingShips.MovingShips.ships;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

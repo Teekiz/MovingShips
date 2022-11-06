@@ -1,6 +1,6 @@
-name: TekizShip
+name: MovingShips
 version: '${project.version}'
-main: tekizship.tekizship.TekizShip
+main: MovingShips.MovingShips.MovingShips
 api-version: 1.19
 commands:
   moveship:

@@ -1,5 +1,6 @@
-package tekizship.tekizship.commands;
+package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.ships.ShipSetup;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -7,8 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import tekizship.tekizship.ships.ShipAccess;
-import tekizship.tekizship.ships.ShipSetup;
+import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.*;
 

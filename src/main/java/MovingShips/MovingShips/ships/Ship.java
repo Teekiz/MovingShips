@@ -1,4 +1,4 @@
-package tekizship.tekizship.ships;
+package MovingShips.MovingShips.ships;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -128,7 +128,7 @@ public class Ship {
         if (LocalDateTime.now().minusSeconds(1).isAfter(lastCommandInputted)){
             this.speed = speed;
             lastCommandInputted = LocalDateTime.now();
-
+            Bukkit.getPlayer(getOwnerName()).sendMessage(getShipName() + " speed set to " + getSpeed() + ".");
         }
     }
 

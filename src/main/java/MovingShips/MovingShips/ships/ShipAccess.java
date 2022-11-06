@@ -1,9 +1,10 @@
-package tekizship.tekizship.ships;
+package MovingShips.MovingShips.ships;
 
 
 import java.io.*;
 import java.util.ArrayList;
 
+import MovingShips.MovingShips.MovingShips;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,8 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import tekizship.tekizship.TekizShip;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,7 +106,7 @@ public class ShipAccess {
                 }
             }
 
-            File file = new File(TekizShip.getPlugin().getDataFolder().getAbsolutePath() + "/ShipData.json");
+            File file = new File(MovingShips.getPlugin().getDataFolder().getAbsolutePath() + "/ShipData.json");
             file.getParentFile().mkdir();
             file.createNewFile();
             Writer writer = new FileWriter(file, false);
@@ -124,7 +123,7 @@ public class ShipAccess {
     public void loadShip(){
         try {
             JsonParser jsonParser = new JsonParser();
-            File file = new File(TekizShip.getPlugin().getDataFolder().getAbsolutePath() + "/ShipData.json");
+            File file = new File(MovingShips.getPlugin().getDataFolder().getAbsolutePath() + "/ShipData.json");
             if (file.exists()) {
                 Reader reader = new FileReader(file);
                 JsonArray jsonShopArray = (JsonArray) jsonParser.parse(reader);

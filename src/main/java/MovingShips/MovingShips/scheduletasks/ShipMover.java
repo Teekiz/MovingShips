@@ -1,10 +1,10 @@
-package tekizship.tekizship.scheduletasks;
+package MovingShips.MovingShips.scheduletasks;
 
+import MovingShips.MovingShips.commands.MoveShip;
 import org.bukkit.Bukkit;
-import tekizship.tekizship.commands.MoveShip;
-import tekizship.tekizship.commands.RotateShip;
-import tekizship.tekizship.ships.Ship;
-import tekizship.tekizship.ships.ShipAccess;
+import MovingShips.MovingShips.commands.RotateShip;
+import MovingShips.MovingShips.ships.Ship;
+import MovingShips.MovingShips.ships.ShipAccess;
 
 public class ShipMover  {
     ShipAccess shipAccess = ShipAccess.getInstance();

@@ -1,15 +1,15 @@
-package tekizship.tekizship;
+package MovingShips.MovingShips;
 
+import MovingShips.MovingShips.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import tekizship.tekizship.commands.*;
-import tekizship.tekizship.scheduletasks.ShipMover;
-import tekizship.tekizship.ships.ShipAccess;
+import MovingShips.MovingShips.scheduletasks.ShipMover;
+import MovingShips.MovingShips.ships.ShipAccess;
 
 
-public final class TekizShip extends JavaPlugin {
+public final class MovingShips extends JavaPlugin {
 
-    private static TekizShip plugin;
+    private static MovingShips plugin;
 
     //todo add command listeners
     //todo add crew system
@@ -26,7 +26,7 @@ public final class TekizShip extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
-        Bukkit.getLogger().info("Ship Plugin Enable");
+        Bukkit.getLogger().info("MovingShips Plugin Enabled");
         getCommand("createship").setExecutor(new CreateShip());
         getCommand("moveship").setExecutor(new MoveShip());
         getCommand("setshipcontrols").setExecutor(new SetShipControls());
@@ -51,7 +51,7 @@ public final class TekizShip extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public static TekizShip getPlugin(){
+    public static MovingShips getPlugin(){
         return plugin;
     }
 }
