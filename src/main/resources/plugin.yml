@@ -21,16 +21,16 @@ commands:
     permission-message: You do not have permission to create a ship.
   rotateship:
     description: Rotates the ship.
-    usage: /rotateship name_of_ship <left/right>
+    usage: /rotateship <Left/Right> <Name of ship>
     aliases:
     permission: rotateship
-    permission-message: You do not have permission to spawn a ship.
+    permission-message: You do not have permission to rotate a ship.
   setshipcontrols:
     description: Sets the ship controls.
-    usage: /setshipcontrols name_of_ship axis
+    usage: /setshipcontrols <Forward/Back/Left/Right/RotateLeft/RotateRight> <Name of ship>
     aliases:
     permission: setshipcontrols
-    permission-message: You do not have permission to spawn a ship.
+    permission-message: You do not have permission to set the controls of a ship.
   setshipforwarddirection:
     description: Sets the ship controls.
     usage: /setforwarddirection name_of_ship

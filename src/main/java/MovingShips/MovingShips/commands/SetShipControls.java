@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.utility.PermissionCheck;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -9,7 +10,9 @@ import org.bukkit.entity.Player;
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.ships.ShipAccess;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class SetShipControls implements CommandExecutor {
@@ -23,29 +26,55 @@ public class SetShipControls implements CommandExecutor {
         }
         Player player = (Player) commandSender;
 
-        if (args.length==0 || args.length < 2){
-            player.sendMessage("Please provide a ship name and control.");
-            return true;
-        } else {
-            String shipName = args[0];
-            String control = args[1];
-
-            if (control.equalsIgnoreCase("forward") || control.equalsIgnoreCase("back")
-                    || control.equalsIgnoreCase("left") || control.equalsIgnoreCase("right")
-                    || control.equalsIgnoreCase("rotateLeft") || control.equalsIgnoreCase("rotateRight")){
-                //Not 100% sure why I cannot set this directly, but it works
-                Set<Material> set = null;
-                Location targetLocation = player.getTargetBlock(set, 5).getLocation();
-                if (checkIsControlOnShip(targetLocation, shipAccess.getShipByName(shipName).getShipBlocks())){
-                    setControl(shipName, control, targetLocation, player);
-                } else {
-                    player.sendMessage("The location must be on the ship.");
+        try {
+            if (args.length < 2){
+                player.sendMessage("<MovingShips> SetShipControls arguments: <Forward/Back/Left/Right/RotateLeft/RotateRight> <Name of Ship>.");
+            } else {
+                String shipName = "";
+                //for the ship name
+                List<String> arguments = new ArrayList<>();
+                for (String argument : args) {
+                    arguments.add(argument);
                 }
 
-            } else {
-                //todo - check to see if the ship is within the area of the ship (otherwise will be the controls)
-                player.sendMessage("Invalid control, must be either forward, back, right, left, rotateRight or rotateLeft");
+                //to add spaces between the names
+                for (int i = 1; i < arguments.size(); i++) {
+                    if (i == arguments.size() - 1) {
+                        shipName += arguments.get(i);
+                    } else {
+                        shipName += arguments.get(i) + " ";
+                    }
+                }
+
+                String control = args[0];
+
+                if (control.equalsIgnoreCase("forward") || control.equalsIgnoreCase("back")
+                        || control.equalsIgnoreCase("left") || control.equalsIgnoreCase("right")
+                        || control.equalsIgnoreCase("rotateLeft") || control.equalsIgnoreCase("rotateRight")){
+                    //Not 100% sure why I cannot set this directly, but it works
+                    Set<Material> set = null;
+                    Location targetLocation = player.getTargetBlock(set, 5).getLocation();
+                    Ship ship = shipAccess.getShipByName(shipName);
+                    if (ship != null){
+                        if (checkIsControlOnShip(targetLocation, ship.getShipBlocks())){
+                            if (PermissionCheck.hasPermissionOwner(ship, player)){
+                                setControl(shipName, control, targetLocation, player);
+                            } else {
+                                player.sendMessage("§4§ <MovingShips> You do not have to set controls on this ship.");
+                            }
+                        } else {
+                            player.sendMessage("§4§ <MovingShips> The location must be on the ship.");
+                        }
+                    } else {
+                        player.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");
+                    }
+                } else {
+                    player.sendMessage("§4§ <MovingShips> Invalid control. The control must be either forward, back, right, left, rotateRight or rotateLeft");
+                }
+
             }
+        } catch (Exception e){
+            player.sendMessage("§4§ <MovingShips> Invalid command usage. Proper command usage: /SetShipControls <Forward/Back/Left/Right/RotateLeft/RotateRight> <Name of Ship>.");
         }
         return true;
     }
@@ -56,7 +85,7 @@ public class SetShipControls implements CommandExecutor {
             ship.setShipControlLocation(control, controlLocation, player);
             shipAccess.saveShip();
         } else {
-            player.sendMessage("Ship cannot be found.");
+            player.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");
         }
     }
 

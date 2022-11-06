@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.utility.PermissionCheck;
 import MovingShips.MovingShips.utility.PlayersOnShip;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -51,7 +52,11 @@ public class RotateShip implements CommandExecutor {
 
                 if (ship != null){
                     if (direction.equalsIgnoreCase("left") || direction.equalsIgnoreCase("right")){
-                        rotateShip(ship, direction,  player);
+                        if (PermissionCheck.hasPermission(ship, player)){
+                            rotateShip(ship, direction,  player);
+                        } else {
+                            player.sendMessage("§4§ <MovingShips> You do not have permission to rotate this ship.");
+                        }
                     } else {
                         player.sendMessage("§4§ <MovingShips> Invalid direction. Please use either left or right.");
                     }

@@ -171,7 +171,6 @@ public class SetupShip implements CommandExecutor {
                     player.sendMessage("Rotate right control location set at " + rotateRightLocation.getBlockX() + " (X), " +
                             rotateRightLocation.getBlockY() + " (Y), " + rotateRightLocation.getBlockZ() + " (Z).");
 
-                    //todo check if they are on the ship
                     player.sendMessage("Please use '/ShipSetup confirm' to continue or '/ShipSetup cancel' to restart or '/ShipSetup undo' to set the controls again.");
                     shipSetup.setRotateRight(rotateRightLocation);
                 }
@@ -321,7 +320,7 @@ public class SetupShip implements CommandExecutor {
         if (setShipControls.checkIsControlOnShip(location,blocks)){
             return true;
         } else {
-            player.sendMessage("This block is not within the ships area, please selected another block.");
+            player.sendMessage("<MovingShips> This block is not within the ships area, please selected another block.");
             return false;
         }
     }

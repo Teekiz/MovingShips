@@ -98,7 +98,7 @@ public class MoveShip  implements CommandExecutor {
             directionAmount = Math.abs(directionAmount);
         }
 
-        //this method could be simplified - but i think its a bit easier to read atm
+        //this method could be simplified - but I think it's a bit easier to read atm
         if (directionCommand.equalsIgnoreCase("left")){
             if (direction.equalsIgnoreCase("X") && directionValue.equalsIgnoreCase("-")){
                 direction = "Z";
