@@ -333,7 +333,6 @@ public class SetupShip implements CommandExecutor {
         }
         return null;
     }
-
     public void removeShipSetup(ShipSetup shipSetup) {
         storedShipSetup.remove(shipSetup);
     }

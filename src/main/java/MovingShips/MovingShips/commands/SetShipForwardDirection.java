@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.utility.PermissionCheck;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +16,7 @@ import java.util.Set;
 public class SetShipForwardDirection implements CommandExecutor {
 
     ShipAccess shipAccess = ShipAccess.getInstance();
+    Ship selectedShip;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
@@ -23,15 +25,42 @@ public class SetShipForwardDirection implements CommandExecutor {
         }
 
         Player player = (Player) commandSender;
+        try {
+            if (args.length < 1){
+                player.sendMessage("<MovingShips> SetShipForwardDirection arguments: <Name of Ship>.");
+            } else {
+                String shipName = "";
+                //for the ship name
+                List<String> arguments = new ArrayList<>();
+                for (String argument : args) {
+                    arguments.add(argument);
+                }
 
-        if (args.length == 0) {
-            player.sendMessage("Please provide a ship name.");
-        } else {
-            Ship ship = shipAccess.getShipByName(args[0]);
-            Set<Material> set = null;
-            String direction = getShipDirection(player).get(0);
-            String directionValue = getShipDirection(player).get(1);
-            setShipDirection(ship, player, direction, directionValue);
+                //to add spaces between the names
+                for (int i = 0; i < arguments.size(); i++) {
+                    if (i == arguments.size() - 1) {
+                        shipName += arguments.get(i);
+                    } else {
+                        shipName += arguments.get(i) + " ";
+                    }
+                }
+
+                selectedShip = shipAccess.getShipByName(shipName);
+                if (selectedShip == null) {
+                    player.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");
+                } else {
+                    if (PermissionCheck.hasPermissionOwner(selectedShip, player)){
+                        String direction = getShipDirection(player).get(0);
+                        String directionValue = getShipDirection(player).get(1);
+                        setShipDirection(selectedShip, player, direction, directionValue);
+                    } else {
+                        player.sendMessage("§4§ <MovingShips> You do not have to set the forward direction of this ship.");
+                    }
+                }
+
+            }
+        } catch (Exception e){
+            player.sendMessage("§4§ <MovingShips> Invalid command usage. Proper command usage: /SetShipForwardDirection <Name of Ship>.");
         }
         return true;
     }
@@ -60,7 +89,7 @@ public class SetShipForwardDirection implements CommandExecutor {
     public void setShipDirection(Ship ship, Player player, String direction, String directionValue){
         ship.setFrontDirection(direction);
         ship.setFrontDirectionValue(directionValue);
-        player.sendMessage("Set ship forward direction to " + direction + directionValue + ".");
+        player.sendMessage("<MovingShips> Set ship forward direction to " + direction + directionValue + ".");
         shipAccess.saveShip();
     }
 }

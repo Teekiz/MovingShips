@@ -91,7 +91,7 @@ public class Ship {
         //checks to see if a control already exists in the location
         for (Map.Entry<String, Location> pair : getShipControlLocations().entrySet()) {
             if (pair.getValue().equals(location) && !pair.getKey().equalsIgnoreCase(controlName)){
-                player.sendMessage("This block already has control '" + pair.getKey() + "' set. Please move the previous control and try again.");
+                player.sendMessage("<MovingShips> This block already has control '" + pair.getKey() + "' set. Please move the previous control and try again.");
                 return;
             }
         }
@@ -101,14 +101,14 @@ public class Ship {
             //if the control already exists
             if (controlNameOld.equalsIgnoreCase(controlName)) {
                 shipControls.replace(controlName, location);
-                player.sendMessage("Control '" + controlName+ "' has been moved.");
+                player.sendMessage("<MovingShips> Control '" + controlName+ "' has been moved.");
                 return;
             }
         }
 
         //assumes there are no existing controls
         shipControls.put(controlName, location);
-        player.sendMessage("Control " + controlName + " successfully set to ship: " + shipName + ".");
+        player.sendMessage("<MovingShips> Control " + controlName + " successfully set to ship: " + shipName + ".");
     }
 
     public void setFrontDirectionValue(String frontDirectionValue) {

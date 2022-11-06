@@ -17,12 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShipAccess {
-
     private static ShipAccess instance;
     private ShipAccess(){}
     private ArrayList<Ship> ships = new ArrayList<>();
     private Ship selectedShip;
-
 
     //theory - on enable, a list of ship objects will be created.
     public static synchronized ShipAccess getInstance(){

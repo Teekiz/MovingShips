@@ -33,13 +33,13 @@ commands:
     permission-message: You do not have permission to set the controls of a ship.
   setshipforwarddirection:
     description: Sets the ship controls.
-    usage: /setforwarddirection name_of_ship
+    usage: /setshipforwarddirection <Name of ship>
     aliases:
-    permission: setforwarddirection
-    permission-message: You do not have permission to spawn a ship.
-  setupship:
-    description: Sets the ship controls.
-    usage: /setupship
+    permission: setshipforwarddirection
+    permission-message: You do not have permission to set the forward direction of a ship.
+  shipsetup:
+    description: Creates a ship along with direction, control and name.
+    usage: /shipsetup
     aliases:
-    permission: setupship
-    permission-message: You do not have permission to spawn a ship.
+    permission: shipsetup
+    permission-message: You do not have permission to create a ship.
