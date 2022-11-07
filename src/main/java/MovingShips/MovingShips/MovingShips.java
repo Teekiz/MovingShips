@@ -18,7 +18,6 @@ public final class MovingShips extends JavaPlugin {
     //todo move beds and chest contents each movement check
     //todo to check for special blocks (i.e. ladders) and set them correctly
     //todo setup config file, to set max speed, max amount of ships
-    //todo create a delete command
     //todo check if the ship is actually in water
 
     @Override

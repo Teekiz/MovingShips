@@ -1,6 +1,7 @@
 package MovingShips.MovingShips.commands;
 
 import MovingShips.MovingShips.ships.ShipSetup;
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -25,6 +26,7 @@ public class SetupShip implements CommandExecutor {
     CreateShip createShip;
     SetShipControls setShipControls;
     SetShipForwardDirection setShipForwardDirection;
+    String shipName;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
@@ -39,25 +41,11 @@ public class SetupShip implements CommandExecutor {
 
 
         Player player = (Player) commandSender;
-        String shipName = "";
+        shipName = ShipName.filterShipName(args, 1);
         boolean isConfirmed = false;
         boolean isCanceled = false;
         boolean isSet = false;
         boolean isUndone = false;
-
-        List<String> arguments = new ArrayList<>();
-        for (String argument : args) {
-            arguments.add(argument);
-        }
-
-        //to add spaces between the names
-        for (int i = 1; i < arguments.size(); i++) {
-            if (i == arguments.size() - 1) {
-                shipName += arguments.get(i);
-            } else {
-                shipName += arguments.get(i) + " ";
-            }
-        }
 
         if (args.length > 0) {
             if (!args[0].equalsIgnoreCase("confirm") && !args[0].equalsIgnoreCase("cancel") &&

@@ -2,7 +2,7 @@ package MovingShips.MovingShips.commands;
 
 import MovingShips.MovingShips.utility.PermissionCheck;
 import MovingShips.MovingShips.utility.PlayersOnShip;
-import org.bukkit.Bukkit;
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,13 +12,12 @@ import org.bukkit.entity.Player;
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.ships.ShipAccess;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RotateShip implements CommandExecutor {
     ShipAccess shipAccess = ShipAccess.getInstance();
+    String shipName;
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (!(commandSender instanceof Player)) {
@@ -31,22 +30,7 @@ public class RotateShip implements CommandExecutor {
                 player.sendMessage("<MovingShips> RotateShip arguments: <Left/Right> <Name of Ship>.");
             } else {
 
-                String shipName = "";
-                //for the ship name
-                List<String> arguments = new ArrayList<>();
-                for (String argument : args) {
-                    arguments.add(argument);
-                }
-
-                //to add spaces between the names
-                for (int i = 1; i < arguments.size(); i++) {
-                    if (i == arguments.size() - 1) {
-                        shipName += arguments.get(i);
-                    } else {
-                        shipName += arguments.get(i) + " ";
-                    }
-                }
-
+                shipName = ShipName.filterShipName(args, 1);
                 Ship ship = shipAccess.getShipByName(shipName);
                 String direction = args[0];
 
@@ -73,6 +57,14 @@ public class RotateShip implements CommandExecutor {
     public void rotateShip(Ship ship, String directionRotate, Player player) {
         Location centerBlock = ship.getShipControlLocations().get("forward").getBlock().getLocation();
         HashMap<Location, Material> shipBlocksNew = new HashMap<>();
+
+        if (ship.getFrontDirection() == null || ship.getFrontDirection().equalsIgnoreCase("null") ||
+                ship.getFrontDirectionValue() == null || ship.getFrontDirectionValue().equalsIgnoreCase("null")){
+            player.sendMessage("§4§ <MovingShips> The ships forward direction has not been set. Please use /setshipforwarddirection before continuing.");
+            ship.setSpeed(0);
+            ship.setQueuedCommand(null);
+            return;
+        }
 
         if (!isClearToRotate(ship, directionRotate, centerBlock)) {
             player.sendMessage("§4§ <MovingShips> Target location would place one or more blocks inside another block.");

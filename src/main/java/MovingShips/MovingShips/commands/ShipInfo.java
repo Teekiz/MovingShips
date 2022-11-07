@@ -2,16 +2,13 @@ package MovingShips.MovingShips.commands;
 
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.ships.ShipAccess;
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ShipInfo implements CommandExecutor {
     ShipAccess shipAccess = ShipAccess.getInstance();
+    String shipName;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String [] args) {
@@ -20,22 +17,7 @@ public class ShipInfo implements CommandExecutor {
                 commandSender.sendMessage("<MovingShips> ShipInfo arguments: <Name of Ship>.");
             }
             else {
-                String shipName = "";
-                //for the ship name
-                List<String> arguments = new ArrayList<>();
-                for (String argument : args) {
-                    arguments.add(argument);
-                }
-
-                //to add spaces between the names
-                for (int i = 0; i < arguments.size(); i++) {
-                    if (i == arguments.size() - 1) {
-                        shipName += arguments.get(i);
-                    } else {
-                        shipName += arguments.get(i) + " ";
-                    }
-                }
-
+                String shipName = ShipName.filterShipName(args, 0);
                 Ship ship = shipAccess.getShipByName(shipName);
                 if (ship == null){
                     commandSender.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");

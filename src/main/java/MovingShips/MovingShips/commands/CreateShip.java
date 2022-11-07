@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,12 +13,13 @@ import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CreateShip implements CommandExecutor {
 
     HashMap<Location, Material> shipBlocksCurrent;
     ShipAccess shipAccess = ShipAccess.getInstance();
+    String shipName;
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String [] args) {
         if (!(commandSender instanceof Player)) {
@@ -25,28 +27,12 @@ public class CreateShip implements CommandExecutor {
         }
 
         Player player = (Player) commandSender;
-        String shipName = "";
-
         if (command.getName().equalsIgnoreCase("createship")){
             try {
                 if (args.length < 7){
                     player.sendMessage("<MovingShips> CreateShip arguments: <X1> Y1> <Z1> <X2> <Y2> <Z2> <Name of Ship>.");
                 } else {
-
-                    //for the ship name
-                    List<String> arguments = new ArrayList<>();
-                    for (String argument : args) {
-                        arguments.add(argument);
-                    }
-
-                    //to add spaces between the names
-                    for (int i = 6; i < arguments.size(); i++) {
-                        if (i == arguments.size() - 1) {
-                            shipName += arguments.get(i);
-                        } else {
-                            shipName += arguments.get(i) + " ";
-                        }
-                    }
+                    shipName = ShipName.filterShipName(args, 6);
 
                     Location startLocation = new Location(player.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
                     Location endLocation = new Location(player.getWorld(), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]));

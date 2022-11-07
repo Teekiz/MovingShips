@@ -1,6 +1,7 @@
 package MovingShips.MovingShips.commands;
 
 import MovingShips.MovingShips.utility.PermissionCheck;
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -10,14 +11,14 @@ import org.bukkit.entity.Player;
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.ships.ShipAccess;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class SetShipControls implements CommandExecutor {
 
     ShipAccess shipAccess = ShipAccess.getInstance();
+    String shipName;
+    String control;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
@@ -30,23 +31,8 @@ public class SetShipControls implements CommandExecutor {
             if (args.length < 2){
                 player.sendMessage("<MovingShips> SetShipControls arguments: <Forward/Back/Left/Right/RotateLeft/RotateRight> <Name of Ship>.");
             } else {
-                String shipName = "";
-                //for the ship name
-                List<String> arguments = new ArrayList<>();
-                for (String argument : args) {
-                    arguments.add(argument);
-                }
-
-                //to add spaces between the names
-                for (int i = 1; i < arguments.size(); i++) {
-                    if (i == arguments.size() - 1) {
-                        shipName += arguments.get(i);
-                    } else {
-                        shipName += arguments.get(i) + " ";
-                    }
-                }
-
-                String control = args[0];
+                shipName = ShipName.filterShipName(args, 1);
+                control = args[0];
 
                 if (control.equalsIgnoreCase("forward") || control.equalsIgnoreCase("back")
                         || control.equalsIgnoreCase("left") || control.equalsIgnoreCase("right")

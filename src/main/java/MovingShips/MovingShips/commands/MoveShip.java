@@ -2,7 +2,7 @@ package MovingShips.MovingShips.commands;
 
 import MovingShips.MovingShips.utility.PermissionCheck;
 import MovingShips.MovingShips.utility.PlayersOnShip;
-import org.bukkit.Bukkit;
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -11,11 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.ships.ShipAccess;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MoveShip  implements CommandExecutor {
@@ -44,23 +41,7 @@ public class MoveShip  implements CommandExecutor {
             } else {
                 direction = args[0];
                 directionAmount = Integer.parseInt(args[1]);
-                shipName = "";
-
-                //for the ship name
-                List<String> arguments = new ArrayList<>();
-                for (String argument : args) {
-                    arguments.add(argument);
-                }
-
-                //to add spaces between the names
-                for (int i = 2; i < arguments.size(); i++) {
-                    if (i == arguments.size() - 1) {
-                        shipName += arguments.get(i);
-                    } else {
-                        shipName += arguments.get(i) + " ";
-                    }
-                }
-
+                shipName = ShipName.filterShipName(args, 2);
                 selectedShip = shipAccess.getShipByName(shipName);
 
                 if (selectedShip == null) {
@@ -90,6 +71,14 @@ public class MoveShip  implements CommandExecutor {
 
         direction = ship.getFrontDirection();
         directionValue = ship.getFrontDirectionValue();
+
+        if (direction == null || direction.equalsIgnoreCase("null") ||
+                directionValue == null || directionValue.equalsIgnoreCase("null")){
+            player.sendMessage("§4§ <MovingShips> The ships forward direction has not been set. Please use /setshipforwarddirection before continuing.");
+            ship.setSpeed(0);
+            ship.setQueuedCommand(null);
+            return;
+        }
 
         //alters the direction of forward and back if necessary
         if (directionCommand.equalsIgnoreCase("forward") && directionValue.equalsIgnoreCase("-")){
@@ -143,6 +132,7 @@ public class MoveShip  implements CommandExecutor {
             //if the player uses the command version, it skips this as the command is a one time thing.
             if (PlayersOnShip.getPlayersOnShip(ship).size() == 0 && !isCommand){
                 ship.setSpeed(0);
+                ship.setQueuedCommand(null);
                 player.sendMessage("<MovingShips> " + ship.getShipName() + " speed set to 0 because no players are onboard.");
                 return;
             }

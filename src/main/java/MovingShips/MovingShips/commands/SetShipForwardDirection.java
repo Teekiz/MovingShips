@@ -1,7 +1,7 @@
 package MovingShips.MovingShips.commands;
 
 import MovingShips.MovingShips.utility.PermissionCheck;
-import org.bukkit.Material;
+import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,12 +11,12 @@ import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class SetShipForwardDirection implements CommandExecutor {
 
     ShipAccess shipAccess = ShipAccess.getInstance();
     Ship selectedShip;
+    String shipName;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
@@ -29,22 +29,7 @@ public class SetShipForwardDirection implements CommandExecutor {
             if (args.length < 1){
                 player.sendMessage("<MovingShips> SetShipForwardDirection arguments: <Name of Ship>.");
             } else {
-                String shipName = "";
-                //for the ship name
-                List<String> arguments = new ArrayList<>();
-                for (String argument : args) {
-                    arguments.add(argument);
-                }
-
-                //to add spaces between the names
-                for (int i = 0; i < arguments.size(); i++) {
-                    if (i == arguments.size() - 1) {
-                        shipName += arguments.get(i);
-                    } else {
-                        shipName += arguments.get(i) + " ";
-                    }
-                }
-
+                shipName = ShipName.filterShipName(args, 0);
                 selectedShip = shipAccess.getShipByName(shipName);
                 if (selectedShip == null) {
                     player.sendMessage("§4§ <MovingShips> Cannot find ship by that name.");

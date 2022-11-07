@@ -140,9 +140,6 @@ public class Ship {
     }
 
     public void setQueuedCommand(String queuedCommand) {
-        if (LocalDateTime.now().minusSeconds(1).isAfter(lastCommandInputted)){
-            this.queuedCommand = queuedCommand;
-            lastCommandInputted = LocalDateTime.now();
-        }
+        this.queuedCommand = queuedCommand;
     }
 }
