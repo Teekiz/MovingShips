@@ -1,0 +1,4 @@
+maxSpeed: 3
+protectionRadius: 5
+maxShips: 100
+maxShipSize: 10000

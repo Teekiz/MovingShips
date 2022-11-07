@@ -66,7 +66,9 @@ public class SetupShip implements CommandExecutor {
         }
 
         //this means the player hasn't stored anything just yet.
-        if (getShipSetup(player) == null) {
+        if (shipAccess.getShips().size() >= MovingShipsConfiguration.getMaxShips()){
+            player.sendMessage("§4§ <MovingShips> The maximum amount of ships have been reached.");
+        } else if (getShipSetup(player) == null) {
             player.sendMessage("§b§ <MovingShips> --- Ship Setup (1/10) --- <MovingShips>");
             player.sendMessage("Please look at first location block and type '/ShipSetup set'. The coordinate will be used to define the ship boundaries.");
             player.sendMessage("Ensure that the target is large enough to cover the whole ship.");
@@ -74,8 +76,6 @@ public class SetupShip implements CommandExecutor {
             storedShipSetup.add(shipSetup);
         } else {
             shipSetup = getShipSetup(player);
-
-
 
         /*
              PART FIVE: CREATING THE SHIP

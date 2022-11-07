@@ -44,7 +44,7 @@ public final class MovingShipsConfiguration {
         MovingShipsConfiguration.maxShipSize = maxShipSize;
     }
 
-    //just incase it is needed
+    //just in case it is needed
     public static void saveConfig(){
         FileConfiguration configuration = MovingShips.getPlugin().getConfig();
         configuration.set("maxSpeed", getMaxSpeed());
