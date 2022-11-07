@@ -43,3 +43,27 @@ commands:
     aliases:
     permission: shipsetup
     permission-message: You do not have permission to create a ship.
+  deleteship:
+    description: Deletes the specified ship.
+    usage: /deleteship <Name of ship>
+    aliases:
+    permission: deleteship
+    permission-message: You do not have permission to delete a ship.
+  shiplist:
+    description: Shows all ships in the server.
+    usage: /shiplist
+    aliases:
+    permission: shiplist
+    permission-message: You do not have permission to list all ships.
+  shiphelp:
+    description: Lists all ships commands.
+    usage: /shiphelp
+    aliases:
+    permission: shiphelp
+    permission-message: You do not have permission to get help.
+  shipinfo:
+    description: Lists all the specified ship information.
+    usage: /shipinfo
+    aliases:
+    permission: shipinfo
+    permission-message: You do not have permission to see a ships info.

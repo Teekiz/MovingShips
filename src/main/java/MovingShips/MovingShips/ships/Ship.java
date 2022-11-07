@@ -27,7 +27,6 @@ public class Ship {
     String frontDirectionValue;
 
     int speed = 0;
-    //todo queue the commands
     String queuedCommand;
 
     //this is to ensure that a ship can only add one command per second

@@ -13,16 +13,13 @@ public final class MovingShips extends JavaPlugin {
 
     private static MovingShips plugin;
 
-    //todo add command listeners
     //todo add crew system
     //todo add a system to prevent creating or destroying blocks on a ship
     //todo move beds and chest contents each movement check
-    //todo neaten up the commands
     //todo to check for special blocks (i.e. ladders) and set them correctly
     //todo setup config file, to set max speed, max amount of ships
     //todo create a delete command
     //todo check if the ship is actually in water
-    //todo add ship permissions
 
     @Override
     public void onEnable() {
@@ -46,6 +43,18 @@ public final class MovingShips extends JavaPlugin {
 
         getCommand("shipsetup").setExecutor(new SetupShip());
         getCommand("shipsetup").setTabCompleter(new SetupShipTabCompleter());
+
+        getCommand("deleteship").setExecutor(new DeleteShip());
+        getCommand("deleteship").setTabCompleter(new DeleteShipTabCompleter());
+
+        getCommand("shiplist").setExecutor(new ShipList());
+        getCommand("shiplist").setTabCompleter(new BlankArgsTabCompleter());
+
+        getCommand("shiphelp").setExecutor(new ShipHelp());
+        getCommand("shiphelp").setTabCompleter(new BlankArgsTabCompleter());
+
+        getCommand("shipinfo").setExecutor(new ShipInfo());
+        getCommand("shipinfo").setTabCompleter(new ShipsTabCompleter());
 
         getServer().getPluginManager().registerEvents(new CommandMovementListener(), this);
 
