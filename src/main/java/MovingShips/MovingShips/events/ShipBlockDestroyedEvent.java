@@ -13,11 +13,14 @@ public class ShipBlockDestroyedEvent implements Listener {
 
     @EventHandler
     public void destroyBlockCheck(BlockDamageEvent event) {
-        Player player = event.getPlayer();
-        if (isBlockOnShip(event.getBlock().getLocation())){
-            event.setCancelled(true);
-            player.sendMessage("§4§ <MovingShips> You cannot destroy blocks on a ship.");
-        }
+        try {
+            Player player = event.getPlayer();
+            if (isBlockOnShip(event.getBlock().getLocation())){
+                event.setCancelled(true);
+                player.sendMessage("§4§ <MovingShips> You cannot destroy blocks on a ship.");
+            }
+        } catch (Exception e){}
+
     }
 
     public boolean isBlockOnShip(Location blockDestroyedLocation){

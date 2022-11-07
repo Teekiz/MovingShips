@@ -14,6 +14,7 @@ import MovingShips.MovingShips.ships.ShipAccess;
 public final class MovingShips extends JavaPlugin {
 
     private static MovingShips plugin;
+    ShipAccess access = ShipAccess.getInstance();
 
     //todo move beds and chest contents each movement check
     //todo to check for special blocks (i.e. ladders) and set them correctly
@@ -65,7 +66,7 @@ public final class MovingShips extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ShipBlockDestroyedEvent(), this);
         getServer().getPluginManager().registerEvents(new ShipBlockPlaceEvent(), this);
 
-        ShipAccess access = ShipAccess.getInstance();
+
         ShipMover shipMover = new ShipMover();
         access.loadShip();
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -79,7 +80,7 @@ public final class MovingShips extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        //MovingShipsConfiguration.saveConfig();
+        access.saveShip();
     }
 
     public static MovingShips getPlugin(){

@@ -14,12 +14,14 @@ public class ShipBlockPlaceEvent implements Listener {
     ShipAccess shipAccess = ShipAccess.getInstance();
     @EventHandler
     public void placeBlockCheck(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        int protectionRadius = MovingShipsConfiguration.getProtectionRadius();
-        if (isInShipProtectionRadius(protectionRadius, event.getBlockPlaced().getLocation())){
-            player.sendMessage("§4§ <MovingShips> You cannot place blocks within " + protectionRadius + " blocks of a ship.");
-            event.getBlockPlaced().getLocation().getBlock().setType(Material.AIR);
-        }
+        try {
+            Player player = event.getPlayer();
+            int protectionRadius = MovingShipsConfiguration.getProtectionRadius();
+            if (isInShipProtectionRadius(protectionRadius, event.getBlockPlaced().getLocation())){
+                player.sendMessage("§4§ <MovingShips> You cannot place blocks within " + protectionRadius + " blocks of a ship.");
+                event.getBlockPlaced().getLocation().getBlock().setType(Material.AIR);
+            }
+        } catch (Exception e){}
     }
 
     public boolean isInShipProtectionRadius(int protectionRadius, Location blockPlacedLocation){
