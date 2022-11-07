@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.MovingShipsConfiguration;
 import MovingShips.MovingShips.ships.ShipSetup;
 import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
@@ -17,7 +18,7 @@ public class SetupShip implements CommandExecutor {
 
     private static final ArrayList<ShipSetup> storedShipSetup = new ArrayList<>();
 
-    int maxSize = 5000;
+    int maxSize = MovingShipsConfiguration.getMaxShipSize();
     Set<Material> set = null;
     ShipAccess shipAccess;
     ShipSetup shipSetup;

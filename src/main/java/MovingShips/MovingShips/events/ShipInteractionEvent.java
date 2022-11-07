@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.events;
 
+import MovingShips.MovingShips.MovingShipsConfiguration;
 import MovingShips.MovingShips.ships.Ship;
 import MovingShips.MovingShips.utility.PermissionCheck;
 import org.bukkit.Location;
@@ -11,13 +12,12 @@ import MovingShips.MovingShips.ships.ShipAccess;
 
 import java.util.Map;
 
-public class CommandMovementListener implements Listener {
+public class ShipInteractionEvent implements Listener {
 
-    ShipAccess shipAccess;
+    ShipAccess shipAccess = ShipAccess.getInstance();
 
     @EventHandler
     public void shipControlsClick(PlayerInteractEvent event) {
-        shipAccess = ShipAccess.getInstance();
         Player player = event.getPlayer();
         String command = null;
         Ship selectedShip = null;
@@ -41,9 +41,10 @@ public class CommandMovementListener implements Listener {
     //todo - let players assign others to be able to use the ship
     public void shipControlClicked(String command, Ship ship, Player player){
         if (PermissionCheck.hasPermission(ship, player)){
+            int maxSpeed = MovingShipsConfiguration.getMaxSpeed();
             if (command.equalsIgnoreCase("forward")) {
-                if (ship.getSpeed() >= 3){
-                    ship.setSpeed(3);
+                if (ship.getSpeed() >= maxSpeed){
+                    ship.setSpeed(maxSpeed);
                 } else {
                     ship.setSpeed(ship.getSpeed()+1);
                 }
@@ -64,4 +65,5 @@ public class CommandMovementListener implements Listener {
             }
         }
     }
+
 }

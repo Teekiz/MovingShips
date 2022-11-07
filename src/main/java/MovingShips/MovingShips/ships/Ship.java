@@ -1,8 +1,6 @@
 package MovingShips.MovingShips.ships;
 
-import MovingShips.MovingShips.MovingShips;
 import MovingShips.MovingShips.utility.PlayersOnShip;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,7 +8,6 @@ import org.bukkit.entity.Player;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Ship {
@@ -59,10 +56,10 @@ public class Ship {
     public HashMap<Location, Material> getShipBlocks() {
         return shipBlocks;
     }
-
     public HashMap<String, Location> getShipControlLocations() {
         return shipControls;
     }
+
     public ArrayList<String> getCrew() {return crewNames;}
 
     public String getFrontDirectionValue() {return frontDirectionValue;}

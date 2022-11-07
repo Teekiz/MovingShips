@@ -66,6 +66,8 @@ public class MoveShip  implements CommandExecutor {
         return true;
 
     }
+
+    //todo create a hashmap with location and face and then set it at the location if the special block equals it
     //moves the ship in one direction by specified amount
     public void moveShip(Ship ship, String directionCommand, int directionAmount, Player player, boolean isCommand) {
 

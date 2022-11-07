@@ -64,7 +64,6 @@ public class ShipAccess {
         ships.remove(ship);
     }
 
-    //TODO Saves the ship to an exteneral file.
     public void saveShip(){
         try {
             JsonArray jsonShopArray = new JsonArray();

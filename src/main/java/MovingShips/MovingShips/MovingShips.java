@@ -1,7 +1,9 @@
 package MovingShips.MovingShips;
 
 import MovingShips.MovingShips.commands.*;
-import MovingShips.MovingShips.events.CommandMovementListener;
+import MovingShips.MovingShips.events.ShipBlockDestroyedEvent;
+import MovingShips.MovingShips.events.ShipBlockPlaceEvent;
+import MovingShips.MovingShips.events.ShipInteractionEvent;
 import MovingShips.MovingShips.tabcompleters.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,11 +15,9 @@ public final class MovingShips extends JavaPlugin {
 
     private static MovingShips plugin;
 
-    //todo add crew system
-    //todo add a system to prevent creating or destroying blocks on a ship
     //todo move beds and chest contents each movement check
     //todo to check for special blocks (i.e. ladders) and set them correctly
-    //todo setup config file, to set max speed, max amount of ships
+    //todo setup config file, to set max speed, max amount of ships, protection radius, ticks?
     //todo check if the ship is actually in water
 
     @Override
@@ -25,6 +25,10 @@ public final class MovingShips extends JavaPlugin {
         // Plugin startup logic
         plugin = this;
         Bukkit.getLogger().info("MovingShips Plugin Enabled");
+
+        saveDefaultConfig();
+        MovingShipsConfiguration.loadConfig();
+
         getCommand("createship").setExecutor(new CreateShip());
         getCommand("createship").setTabCompleter(new CreateShipTabCompleter());
 
@@ -58,12 +62,13 @@ public final class MovingShips extends JavaPlugin {
         getCommand("shipcrew").setExecutor(new ShipCrew());
         getCommand("shipcrew").setTabCompleter(new ShipCrewTabCompleter());
 
-        getServer().getPluginManager().registerEvents(new CommandMovementListener(), this);
+        getServer().getPluginManager().registerEvents(new ShipInteractionEvent(), this);
+        getServer().getPluginManager().registerEvents(new ShipBlockDestroyedEvent(), this);
+        getServer().getPluginManager().registerEvents(new ShipBlockPlaceEvent(), this);
 
         ShipAccess access = ShipAccess.getInstance();
         ShipMover shipMover = new ShipMover();
         access.loadShip();
-
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -75,6 +80,7 @@ public final class MovingShips extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        //MovingShipsConfiguration.saveConfig();
     }
 
     public static MovingShips getPlugin(){

@@ -72,6 +72,7 @@ public class ShipCrew implements CommandExecutor {
                 commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " is already the captain of " + ship.getShipName() + ".");
             } else {
                 ship.inviteCrew(player.getName());
+                shipAccess.saveShip();
                 commandSender.sendMessage("<MovingShips> " + player.getName() + " has been invited to the crew of " + ship.getShipName() + ".");
                 player.sendMessage("§b§ <MovingShips> You have been invited to the crew of " + ship.getShipName() + "!");
                 player.sendMessage("Please use /ShipCrew <Accept/Reject> <Name of Ship> to accept or reject this offer.");
@@ -82,6 +83,7 @@ public class ShipCrew implements CommandExecutor {
                 commandSender.sendMessage("§4§ <MovingShips> + " + player.getName() + "is not a member of the crew for " + ship.getShipName() + ".");
             } else {
                 ship.deleteCrew(player.getName());
+                shipAccess.saveShip();
                 commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " has been removed from the crew of " + ship.getShipName() + ".");
                 player.sendMessage("§4§ <MovingShips> You has been removed from the crew of " + ship.getShipName() + ".");
             }
@@ -101,10 +103,12 @@ public class ShipCrew implements CommandExecutor {
             if (acceptOrReject.equalsIgnoreCase("Accept")){
                 ship.addCrew(commandSender.getName());
                 ship.removeInvitedCrew(commandSender.getName());
+                shipAccess.saveShip();
                 Bukkit.getPlayer(ship.getOwnerName()).sendMessage("§b§ <MovingShips> " + commandSender.getName() + " has been added to the crew of " + ship.getShipName() + ".");
                 commandSender.sendMessage("<MovingShips> You has been added from the crew of " + ship.getShipName() + ".");
             } else if (acceptOrReject.equalsIgnoreCase("Reject")) {
                 ship.removeInvitedCrew(commandSender.getName());
+                shipAccess.saveShip();
                 Bukkit.getPlayer(ship.getOwnerName()).sendMessage("§4§ <MovingShips> " + commandSender.getName() + " has rejected the offer to join the crew of " + ship.getShipName() + ".");
                 commandSender.sendMessage("§4§ <MovingShips> You have rejected the invite to join the crew of " + ship.getShipName() + ".");
             }

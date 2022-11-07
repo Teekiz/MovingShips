@@ -1,5 +1,6 @@
 package MovingShips.MovingShips.commands;
 
+import MovingShips.MovingShips.MovingShipsConfiguration;
 import MovingShips.MovingShips.utility.ShipName;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +20,7 @@ public class CreateShip implements CommandExecutor {
     HashMap<Location, Material> shipBlocksCurrent;
     ShipAccess shipAccess = ShipAccess.getInstance();
     String shipName;
+    int maxSize = MovingShipsConfiguration.getMaxShipSize();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String [] args) {
@@ -48,6 +50,9 @@ public class CreateShip implements CommandExecutor {
     public void createShip(Location startLocation, Location endLocation, String shipName, Player player, World targetWorld){
         shipBlocksCurrent = new HashMap<>();
 
+        if (getLocationsInArea(startLocation, endLocation, targetWorld).size() > maxSize){
+            player.sendMessage("§4§ <MovingShips> This ship is too big. Please select a smaller area.");
+        }
         for (Location block : getLocationsInArea(startLocation, endLocation, targetWorld)) {
             Material blockDetailMaterial = block.getBlock().getType();
             shipBlocksCurrent.put(block, blockDetailMaterial);
