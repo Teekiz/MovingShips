@@ -44,6 +44,10 @@ public class ShipHelp implements CommandExecutor {
         commandSender.sendMessage("description: - Shows information about the specified ship.");
         commandSender.sendMessage("usage: - /shipinfo <Name of Ship>");
 
+        commandSender.sendMessage("§b§ /shipcrew");
+        commandSender.sendMessage("description: - Used to modify a ships crew. Allows players to accept or reject offers.");
+        commandSender.sendMessage("usage: - /shipcrew <Add/Remove/Accept/Reject> <Name of Player> <Name of Ship>");
+
         return true;
     }
 }

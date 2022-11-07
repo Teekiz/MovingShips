@@ -55,6 +55,9 @@ public final class MovingShips extends JavaPlugin {
         getCommand("shipinfo").setExecutor(new ShipInfo());
         getCommand("shipinfo").setTabCompleter(new ShipsTabCompleter());
 
+        getCommand("shipcrew").setExecutor(new ShipCrew());
+        getCommand("shipcrew").setTabCompleter(new ShipCrewTabCompleter());
+
         getServer().getPluginManager().registerEvents(new CommandMovementListener(), this);
 
         ShipAccess access = ShipAccess.getInstance();

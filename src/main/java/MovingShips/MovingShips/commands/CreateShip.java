@@ -33,14 +33,10 @@ public class CreateShip implements CommandExecutor {
                     player.sendMessage("<MovingShips> CreateShip arguments: <X1> Y1> <Z1> <X2> <Y2> <Z2> <Name of Ship>.");
                 } else {
                     shipName = ShipName.filterShipName(args, 6);
-
                     Location startLocation = new Location(player.getWorld(), Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
                     Location endLocation = new Location(player.getWorld(), Integer.parseInt(args[3]), Integer.parseInt(args[4]), Integer.parseInt(args[5]));
-
                     createShip(startLocation, endLocation, shipName, player, player.getWorld());
                 }
-
-
             } catch (Exception e){
                 player.sendMessage("§4§ <MovingShips> Invalid command usage. Proper command usage: /CreateShip <X1> Y1> <Z1> <X2> <Y2> <Z2> <Name of Ship>.");
             }

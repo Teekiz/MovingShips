@@ -127,8 +127,6 @@ public class MoveShip  implements CommandExecutor {
             ship.setQueuedCommand(null);
         } else {
             shipBlocksNew = new HashMap<>();
-            PlayersOnShip.movePlayer(direction, directionAmount, PlayersOnShip.getPlayersOnShip(ship));
-
             //if the player uses the command version, it skips this as the command is a one time thing.
             if (PlayersOnShip.getPlayersOnShip(ship).size() == 0 && !isCommand){
                 ship.setSpeed(0);
@@ -136,6 +134,8 @@ public class MoveShip  implements CommandExecutor {
                 player.sendMessage("<MovingShips> " + ship.getShipName() + " speed set to 0 because no players are onboard.");
                 return;
             }
+
+            PlayersOnShip.movePlayer(direction, directionAmount, PlayersOnShip.getPlayersOnShip(ship));
 
             //todo handle special blocks (e.g. ladders), get the face and place them last
 

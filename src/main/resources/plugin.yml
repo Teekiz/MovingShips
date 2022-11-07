@@ -67,3 +67,9 @@ commands:
     aliases:
     permission: shipinfo
     permission-message: You do not have permission to see a ships info.
+  shipcrew:
+    description: Used to modify a ships crew. Allows players to accept or reject offers.
+    usage: /shipcrew <Add/Remove/Accept/Reject> <Name of Player> <Name of Ship>
+    aliases:
+    permission: /shipcrew
+    permission-message: You do not have permission to modify a ships crew.

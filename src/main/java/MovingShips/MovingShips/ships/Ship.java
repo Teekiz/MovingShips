@@ -28,7 +28,7 @@ public class Ship {
 
     int speed = 0;
     String queuedCommand;
-
+    ArrayList<String> invitedCrew  = new ArrayList<>();
     //this is to ensure that a ship can only add one command per second
     LocalDateTime lastCommandInputted = LocalDateTime.now();
 
@@ -116,10 +116,22 @@ public class Ship {
     public void setCrew(ArrayList <String> crewNames){
         this.crewNames = crewNames;
     }
-
     public void addCrew(String crewName){ crewNames.add(crewName);}
-
     public void deleteCrew(String crewName){crewNames.remove(crewName);}
+
+    public boolean isCrewMember(String crewName){
+        boolean isCrewMemeber = false;
+        for (String crew : getCrew()){
+            if (crew.equalsIgnoreCase(crew)){
+                isCrewMemeber = true;
+            }
+        }
+        return isCrewMemeber;
+    }
+
+    public ArrayList<String> getInvitedCrew() {return invitedCrew;}
+    public void inviteCrew(String crewName){ invitedCrew.add(crewName);}
+    public void removeInvitedCrew(String crewName){invitedCrew.remove(crewName);}
 
     public int getSpeed(){
         return speed;
