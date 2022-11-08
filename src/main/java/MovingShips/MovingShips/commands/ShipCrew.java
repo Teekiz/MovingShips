@@ -69,7 +69,7 @@ public class ShipCrew implements CommandExecutor {
             if (isCrewMember){
                 commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " is already a member of the crew for " + ship.getShipName() + ".");
             } else if (player.getName().equalsIgnoreCase(ship.getOwnerName())){
-                commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " is already the captain of " + ship.getShipName() + ".");
+                commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " is the captain of " + ship.getShipName() + ".");
             } else {
                 ship.inviteCrew(player.getName());
                 shipAccess.saveShip();
@@ -80,12 +80,12 @@ public class ShipCrew implements CommandExecutor {
 
         } else if (addOrRemove.equalsIgnoreCase("Remove")) {
             if (!isCrewMember){
-                commandSender.sendMessage("§4§ <MovingShips> + " + player.getName() + "is not a member of the crew for " + ship.getShipName() + ".");
+                commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " is not a member of the crew for " + ship.getShipName() + ".");
             } else {
                 ship.deleteCrew(player.getName());
                 shipAccess.saveShip();
                 commandSender.sendMessage("§4§ <MovingShips> " + player.getName() + " has been removed from the crew of " + ship.getShipName() + ".");
-                player.sendMessage("§4§ <MovingShips> You has been removed from the crew of " + ship.getShipName() + ".");
+                player.sendMessage("§4§ <MovingShips> You have been removed from the crew of " + ship.getShipName() + ".");
             }
         }
     }

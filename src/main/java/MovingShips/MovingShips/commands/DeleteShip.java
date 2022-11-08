@@ -29,7 +29,7 @@ public class DeleteShip implements CommandExecutor {
                         commandSender.sendMessage("§4§ <MovingShips> " + ship.getShipName() + " has been deleted.");
                         shipAccess.saveShip();
                     } else {
-                        commandSender.sendMessage("§4§ <MovingShips> You do not have permission to move this ship.");
+                        commandSender.sendMessage("§4§ <MovingShips> You do not have permission to delete this ship.");
                     }
                 }
 

@@ -46,7 +46,7 @@ public class SetShipControls implements CommandExecutor {
                             if (PermissionCheck.hasPermissionOwner(ship, player)){
                                 setControl(shipName, control, targetLocation, player);
                             } else {
-                                player.sendMessage("§4§ <MovingShips> You do not have to set controls on this ship.");
+                                player.sendMessage("§4§ <MovingShips> You do not have permission to set controls on this ship.");
                             }
                         } else {
                             player.sendMessage("§4§ <MovingShips> The location must be on the ship.");

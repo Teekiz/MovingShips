@@ -36,7 +36,7 @@ public final class PermissionCheck {
         }
 
         if (commandSender.isOp()){return true;}
-        if (commandSender.equals(ship.getOwnerName())){return true;}
+        if (commandSender.getName().equals(ship.getOwnerName())){return true;}
         return false;
     }
 
